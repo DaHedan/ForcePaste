@@ -3,8 +3,12 @@
   "WorkspaceRootPath": "F:\\Code\\C#\\ForcePaste\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{E91ECD68-64EE-45B0-840B-5FCEDC5192F3}|ForcePaste.csproj|f:\\code\\c#\\forcepaste\\inputhelper.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{E91ECD68-64EE-45B0-840B-5FCEDC5192F3}|ForcePaste.csproj|solutionrelative:inputhelper.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{E91ECD68-64EE-45B0-840B-5FCEDC5192F3}|ForcePaste.csproj|f:\\code\\c#\\forcepaste\\settingswindow.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{E91ECD68-64EE-45B0-840B-5FCEDC5192F3}|ForcePaste.csproj|solutionrelative:settingswindow.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{E91ECD68-64EE-45B0-840B-5FCEDC5192F3}|ForcePaste.csproj|f:\\code\\c#\\forcepaste\\settingswindow.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}",
+      "RelativeMoniker": "D:0:0:{E91ECD68-64EE-45B0-840B-5FCEDC5192F3}|ForcePaste.csproj|solutionrelative:settingswindow.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{E91ECD68-64EE-45B0-840B-5FCEDC5192F3}|ForcePaste.csproj|f:\\code\\c#\\forcepaste\\mainwindow.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
@@ -13,6 +17,10 @@
     {
       "AbsoluteMoniker": "D:0:0:{E91ECD68-64EE-45B0-840B-5FCEDC5192F3}|ForcePaste.csproj|f:\\code\\c#\\forcepaste\\mainwindow.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}",
       "RelativeMoniker": "D:0:0:{E91ECD68-64EE-45B0-840B-5FCEDC5192F3}|ForcePaste.csproj|solutionrelative:mainwindow.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{E91ECD68-64EE-45B0-840B-5FCEDC5192F3}|ForcePaste.csproj|f:\\code\\c#\\forcepaste\\inputhelper.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{E91ECD68-64EE-45B0-840B-5FCEDC5192F3}|ForcePaste.csproj|solutionrelative:inputhelper.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
   "DocumentGroupContainers": [
@@ -42,7 +50,45 @@
             },
             {
               "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "SettingsWindow.xaml",
+              "DocumentMoniker": "F:\\Code\\C#\\ForcePaste\\SettingsWindow.xaml",
+              "RelativeDocumentMoniker": "SettingsWindow.xaml",
+              "ToolTip": "F:\\Code\\C#\\ForcePaste\\SettingsWindow.xaml*",
+              "RelativeToolTip": "SettingsWindow.xaml*",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003549|",
+              "WhenOpened": "2026-05-27T01:54:30.709Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "SettingsWindow.xaml.cs",
+              "DocumentMoniker": "F:\\Code\\C#\\ForcePaste\\SettingsWindow.xaml.cs",
+              "RelativeDocumentMoniker": "SettingsWindow.xaml.cs",
+              "ToolTip": "F:\\Code\\C#\\ForcePaste\\SettingsWindow.xaml.cs*",
+              "RelativeToolTip": "SettingsWindow.xaml.cs*",
+              "ViewState": "AgIAAHUAAAAAAAAAAAD4vwAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-05-27T01:54:49.296Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
               "DocumentIndex": 2,
+              "Title": "MainWindow.xaml.cs",
+              "DocumentMoniker": "F:\\Code\\C#\\ForcePaste\\MainWindow.xaml.cs",
+              "RelativeDocumentMoniker": "MainWindow.xaml.cs",
+              "ToolTip": "F:\\Code\\C#\\ForcePaste\\MainWindow.xaml.cs*",
+              "RelativeToolTip": "MainWindow.xaml.cs*",
+              "ViewState": "AgIAAGEAAAAAAAAAAAAMwM8AAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-05-13T10:43:27.685Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
               "Title": "MainWindow.xaml",
               "DocumentMoniker": "F:\\Code\\C#\\ForcePaste\\MainWindow.xaml",
               "RelativeDocumentMoniker": "MainWindow.xaml",
@@ -54,7 +100,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 0,
+              "DocumentIndex": 4,
               "Title": "InputHelper.cs",
               "DocumentMoniker": "F:\\Code\\C#\\ForcePaste\\InputHelper.cs",
               "RelativeDocumentMoniker": "InputHelper.cs",
@@ -63,19 +109,6 @@
               "ViewState": "AgIAAA8AAAAAAAAAAAAYwIsAAAABAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2026-05-13T11:07:03.673Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 1,
-              "Title": "MainWindow.xaml.cs",
-              "DocumentMoniker": "F:\\Code\\C#\\ForcePaste\\MainWindow.xaml.cs",
-              "RelativeDocumentMoniker": "MainWindow.xaml.cs",
-              "ToolTip": "F:\\Code\\C#\\ForcePaste\\MainWindow.xaml.cs",
-              "RelativeToolTip": "MainWindow.xaml.cs",
-              "ViewState": "AgIAADMAAAAAAAAAAAAiwGMAAAABAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-05-13T10:43:27.685Z",
               "EditorCaption": ""
             }
           ]

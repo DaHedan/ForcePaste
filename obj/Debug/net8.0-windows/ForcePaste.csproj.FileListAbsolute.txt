@@ -21,3 +21,11 @@ F:\Code\C#\ForcePaste\obj\Debug\net8.0-windows\refint\ForcePaste.dll
 F:\Code\C#\ForcePaste\obj\Debug\net8.0-windows\ForcePaste.pdb
 F:\Code\C#\ForcePaste\obj\Debug\net8.0-windows\ForcePaste.genruntimeconfig.cache
 F:\Code\C#\ForcePaste\obj\Debug\net8.0-windows\ref\ForcePaste.dll
+F:\Code\C#\ForcePaste\obj\Debug\net8.0-windows\FloatBallWindow.baml
+F:\Code\C#\ForcePaste\obj\Debug\net8.0-windows\PastePanelWindow.baml
+F:\Code\C#\ForcePaste\obj\Debug\net8.0-windows\SettingsWindow.baml
+F:\Code\C#\ForcePaste\obj\Debug\net8.0-windows\SidePanelWindow.baml
+F:\Code\C#\ForcePaste\obj\Debug\net8.0-windows\FloatBallWindow.g.cs
+F:\Code\C#\ForcePaste\obj\Debug\net8.0-windows\PastePanelWindow.g.cs
+F:\Code\C#\ForcePaste\obj\Debug\net8.0-windows\SettingsWindow.g.cs
+F:\Code\C#\ForcePaste\obj\Debug\net8.0-windows\SidePanelWindow.g.cs
