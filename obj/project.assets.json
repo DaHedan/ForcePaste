@@ -1,0 +1,154 @@
+{
+  "version": 3,
+  "targets": {
+    "net8.0-windows7.0": {
+      "NHotkey/4.0.0": {
+        "type": "package",
+        "compile": {
+          "lib/net6.0-windows7.0/NHotkey.dll": {
+            "related": ".pdb"
+          }
+        },
+        "runtime": {
+          "lib/net6.0-windows7.0/NHotkey.dll": {
+            "related": ".pdb"
+          }
+        }
+      },
+      "NHotkey.Wpf/4.0.0": {
+        "type": "package",
+        "dependencies": {
+          "NHotkey": "4.0.0"
+        },
+        "compile": {
+          "lib/net6.0-windows7.0/NHotkey.Wpf.dll": {
+            "related": ".pdb"
+          }
+        },
+        "runtime": {
+          "lib/net6.0-windows7.0/NHotkey.Wpf.dll": {
+            "related": ".pdb"
+          }
+        },
+        "frameworkReferences": [
+          "Microsoft.WindowsDesktop.App.WPF"
+        ]
+      }
+    }
+  },
+  "libraries": {
+    "NHotkey/4.0.0": {
+      "sha512": "5HKzttVKWeKoDQKJd3+J7Dy1MW6gbNNYfftkVufe2ddFQD0kXjnT1IN3ZJBfF6QVEQmHpQSp+/PT7Jo2YyHFcw==",
+      "type": "package",
+      "path": "nhotkey/4.0.0",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "lib/net462/NHotkey.dll",
+        "lib/net462/NHotkey.pdb",
+        "lib/net6.0-windows7.0/NHotkey.dll",
+        "lib/net6.0-windows7.0/NHotkey.pdb",
+        "nhotkey.4.0.0.nupkg.sha512",
+        "nhotkey.nuspec"
+      ]
+    },
+    "NHotkey.Wpf/4.0.0": {
+      "sha512": "ocVcoBAON/V+gUGBbAmfto+EKi2N8KcpjSjbxJaPkEzNpm9TefM8eJNji5bzdL3UreSiBtlPQ59VC9/UWQ5JIw==",
+      "type": "package",
+      "path": "nhotkey.wpf/4.0.0",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "lib/net462/NHotkey.Wpf.dll",
+        "lib/net462/NHotkey.Wpf.pdb",
+        "lib/net6.0-windows7.0/NHotkey.Wpf.dll",
+        "lib/net6.0-windows7.0/NHotkey.Wpf.pdb",
+        "nhotkey.wpf.4.0.0.nupkg.sha512",
+        "nhotkey.wpf.nuspec"
+      ]
+    }
+  },
+  "projectFileDependencyGroups": {
+    "net8.0-windows7.0": [
+      "NHotkey.Wpf >= 4.0.0"
+    ]
+  },
+  "packageFolders": {
+    "C:\\Users\\HeDan\\.nuget\\packages\\": {},
+    "F:\\Visual Studio\\Shared\\NuGetPackages": {}
+  },
+  "project": {
+    "version": "1.0.0",
+    "restore": {
+      "projectUniqueName": "F:\\Code\\C#\\ForcePaste\\ForcePaste.csproj",
+      "projectName": "ForcePaste",
+      "projectPath": "F:\\Code\\C#\\ForcePaste\\ForcePaste.csproj",
+      "packagesPath": "C:\\Users\\HeDan\\.nuget\\packages\\",
+      "outputPath": "F:\\Code\\C#\\ForcePaste\\obj\\",
+      "projectStyle": "PackageReference",
+      "fallbackFolders": [
+        "F:\\Visual Studio\\Shared\\NuGetPackages"
+      ],
+      "configFilePaths": [
+        "C:\\Users\\HeDan\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
+        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+      ],
+      "originalTargetFrameworks": [
+        "net8.0-windows"
+      ],
+      "sources": {
+        "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+        "https://api.nuget.org/v3/index.json": {}
+      },
+      "frameworks": {
+        "net8.0-windows7.0": {
+          "targetAlias": "net8.0-windows",
+          "projectReferences": {}
+        }
+      },
+      "warningProperties": {
+        "warnAsError": [
+          "NU1605"
+        ]
+      },
+      "restoreAuditProperties": {
+        "enableAudit": "true",
+        "auditLevel": "low",
+        "auditMode": "direct"
+      },
+      "SdkAnalysisLevel": "9.0.300"
+    },
+    "frameworks": {
+      "net8.0-windows7.0": {
+        "targetAlias": "net8.0-windows",
+        "dependencies": {
+          "NHotkey.Wpf": {
+            "target": "Package",
+            "version": "[4.0.0, )"
+          }
+        },
+        "imports": [
+          "net461",
+          "net462",
+          "net47",
+          "net471",
+          "net472",
+          "net48",
+          "net481"
+        ],
+        "assetTargetFallback": true,
+        "warn": true,
+        "frameworkReferences": {
+          "Microsoft.NETCore.App": {
+            "privateAssets": "all"
+          },
+          "Microsoft.WindowsDesktop.App.WPF": {
+            "privateAssets": "none"
+          }
+        },
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.306/PortableRuntimeIdentifierGraph.json"
+      }
+    }
+  }
+}

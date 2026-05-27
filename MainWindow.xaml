@@ -1,0 +1,41 @@
+﻿<Window x:Class="ForcePaste.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="ForcePaste 设置" Height="280" Width="400" 
+        WindowStartupLocation="CenterScreen" 
+        ResizeMode="CanMinimize">
+    <Grid Margin="20">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <TextBlock Text="ForcePaste - 纯文本模拟键入工具" FontWeight="Bold" FontSize="16" Margin="0,0,0,20"/>
+
+        <!-- 速度调节 -->
+        <StackPanel Grid.Row="1" Orientation="Horizontal" Margin="0,0,0,10">
+            <TextBlock Text="输入速度 (基础延迟):" VerticalAlignment="Center" Width="150"/>
+            <Slider x:Name="SpeedSlider" Minimum="5" Maximum="500" Value="30" Width="150" VerticalAlignment="Center" TickFrequency="10" IsSnapToTickEnabled="True"/>
+            <TextBlock Text="{Binding Value, ElementName=SpeedSlider, StringFormat={}{0} ms}" VerticalAlignment="Center" Margin="10,0,0,0" Width="50"/>
+        </StackPanel>
+
+        <!-- 随机范围调节，最大值绑定到 SpeedSlider 的当前值 -->
+        <StackPanel Grid.Row="2" Orientation="Horizontal" Margin="0,0,0,15">
+            <TextBlock Text="波动范围 (±随机延迟):" VerticalAlignment="Center" Width="150"/>
+            <Slider x:Name="RandomSlider" Minimum="0" Maximum="{Binding Value, ElementName=SpeedSlider}" Value="10" Width="150" VerticalAlignment="Center" TickFrequency="5" IsSnapToTickEnabled="True"/>
+            <TextBlock Text="{Binding Value, ElementName=RandomSlider, StringFormat={}{0} ms}" VerticalAlignment="Center" Margin="10,0,0,0" Width="50"/>
+        </StackPanel>
+
+        <!-- 热键提示 -->
+        <StackPanel Grid.Row="3" Orientation="Horizontal" Margin="0,0,0,15">
+            <TextBlock Text="触发热键:" VerticalAlignment="Center" Width="150"/>
+            <TextBlock Text="Ctrl + Alt + V (已全局绑定)" VerticalAlignment="Center" Foreground="Gray"/>
+        </StackPanel>
+
+        <TextBlock Grid.Row="4" Text="提示: 最小化将隐藏。在其他窗口复制文本后按下 Ctrl+Alt+V 即可触发模拟输入。" 
+                   TextWrapping="Wrap" Foreground="DarkGray" VerticalAlignment="Bottom"/>
+    </Grid>
+</Window>
