@@ -5,115 +5,94 @@ using System.Windows.Input;
 
 namespace ForcePaste
 {
-    /// <summary>
-    /// 应用设置持久化服务。
-    /// 设置保存为 JSON 文件：程序目录/config/settings.json
-    /// </summary>
     public class AppSettings
     {
-        // 快捷键
         public string HotkeyKey { get; set; } = "V";
         public string HotkeyModifiers { get; set; } = "Control, Alt";
-
-        // 粘贴设置
-        public double SpeedDelay { get; set; } = 30;
-        public double RandomVariance { get; set; } = 10;
-
-        // 字体大小
+        public double SpeedDelay { get; set; } = 5;
+        public double RandomVariance { get; set; } = 0;
         public double FontSize { get; set; } = 13;
-
-        // 主题
-        public string Theme { get; set; } = "Dark";
+        public string Theme { get; set; } = "System";
     }
 
     public static class SettingsService
     {
-        private static readonly string SettingsDir;
-        private static readonly string SettingsFilePath;
-        private static AppSettings _cached;
+        private static readonly string ConfigDir = Path.Combine(
+            AppDomain.CurrentDomain.BaseDirectory, "config");
+        private static readonly string FilePath = Path.Combine(ConfigDir, "settings.json");
 
-        static SettingsService()
-        {
-            // 使用程序可执行文件所在目录，实现便携化
-            string appDir = AppDomain.CurrentDomain.BaseDirectory;
-            SettingsDir = Path.Combine(appDir, "config");
-            SettingsFilePath = Path.Combine(SettingsDir, "settings.json");
-        }
+        private static AppSettings _settings = new AppSettings();
+
+        public static AppSettings Settings => _settings;
 
         /// <summary>
-        /// 加载设置。文件不存在或解析失败时返回默认值。
+        /// 从文件加载设置，返回 AppSettings 实例
         /// </summary>
         public static AppSettings Load()
         {
-            if (_cached != null) return _cached;
-
             try
             {
-                if (File.Exists(SettingsFilePath))
+                if (File.Exists(FilePath))
                 {
-                    var json = File.ReadAllText(SettingsFilePath);
-                    var settings = JsonSerializer.Deserialize<AppSettings>(json);
-                    if (settings != null)
-                    {
-                        _cached = settings;
-                        return _cached;
-                    }
+                    var json = File.ReadAllText(FilePath);
+                    _settings = JsonSerializer.Deserialize<AppSettings>(json) ?? new AppSettings();
                 }
             }
             catch
             {
-                // 解析失败，使用默认值
+                _settings = new AppSettings();
             }
-
-            _cached = new AppSettings();
-            return _cached;
+            return _settings;
         }
 
         /// <summary>
-        /// 保存设置到 JSON 文件。
+        /// 保存设置到文件
         /// </summary>
         public static void Save(AppSettings settings)
         {
             try
             {
-                if (!Directory.Exists(SettingsDir))
-                    Directory.CreateDirectory(SettingsDir);
+                _settings = settings;
+                if (!Directory.Exists(ConfigDir))
+                    Directory.CreateDirectory(ConfigDir);
 
-                var options = new JsonSerializerOptions
-                {
-                    WriteIndented = true
-                };
-                var json = JsonSerializer.Serialize(settings, options);
-                File.WriteAllText(SettingsFilePath, json);
-                _cached = settings;
+                var options = new JsonSerializerOptions { WriteIndented = true };
+                var json = JsonSerializer.Serialize(_settings, options);
+                File.WriteAllText(FilePath, json);
             }
-            catch (Exception ex)
-            {
-                System.Diagnostics.Debug.WriteLine($"保存设置失败: {ex.Message}");
-            }
+            catch { }
         }
 
         /// <summary>
-        /// 获取当前设置（已缓存），如果未加载则先 Load。
+        /// 无参保存（使用当前内存中的设置）
         /// </summary>
-        public static AppSettings Current => _cached ?? Load();
-
-        /// <summary>
-        /// 将 Key 枚举名转为可存储的字符串。
-        /// </summary>
-        public static string KeyToString(Key key) => key.ToString();
-
-        /// <summary>
-        /// 将存储的字符串还原为 Key 枚举。
-        /// </summary>
-        public static Key StringToKey(string s)
+        public static void Save()
         {
-            if (Enum.TryParse<Key>(s, out var key)) return key;
+            Save(_settings);
+        }
+
+        #region --- 快捷键字符串转换 ---
+
+        /// <summary>
+        /// Key 枚举转字符串（如 Key.V -> "V"）
+        /// </summary>
+        public static string KeyToString(Key key)
+        {
+            return key.ToString();
+        }
+
+        /// <summary>
+        /// 字符串转 Key 枚举（如 "V" -> Key.V）
+        /// </summary>
+        public static Key StringToKey(string keyStr)
+        {
+            if (Enum.TryParse<Key>(keyStr, out var key))
+                return key;
             return Key.V;
         }
 
         /// <summary>
-        /// 将 ModifierKeys 转为逗号分隔的字符串存储。
+        /// ModifierKeys 转字符串（如 "Control, Alt"）
         /// </summary>
         public static string ModifiersToString(ModifierKeys modifiers)
         {
@@ -126,19 +105,23 @@ namespace ForcePaste
         }
 
         /// <summary>
-        /// 将逗号分隔的字符串还原为 ModifierKeys。
+        /// 字符串转 ModifierKeys（如 "Control, Alt" -> Control|Alt）
         /// </summary>
-        public static ModifierKeys StringToModifiers(string s)
+        public static ModifierKeys StringToModifiers(string modifiersStr)
         {
-            if (string.IsNullOrEmpty(s)) return ModifierKeys.None;
-            var result = ModifierKeys.None;
-            foreach (var part in s.Split(','))
+            if (string.IsNullOrEmpty(modifiersStr))
+                return ModifierKeys.None;
+
+            ModifierKeys result = ModifierKeys.None;
+            var parts = modifiersStr.Split(new[] { ',', ' ' }, StringSplitOptions.RemoveEmptyEntries);
+            foreach (var part in parts)
             {
-                var trimmed = part.Trim();
-                if (Enum.TryParse<ModifierKeys>(trimmed, out var mod))
+                if (Enum.TryParse<ModifierKeys>(part.Trim(), out var mod))
                     result |= mod;
             }
             return result;
         }
+
+        #endregion
     }
 }

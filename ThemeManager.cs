@@ -10,7 +10,7 @@ namespace ForcePaste
 
     public static class ThemeManager
     {
-        private static AppTheme _currentTheme = AppTheme.Dark;
+        private static AppTheme _currentTheme = AppTheme.System;
         public static AppTheme CurrentTheme
         {
             get => _currentTheme;
@@ -55,7 +55,7 @@ namespace ForcePaste
                 }
             }
             catch { }
-            return AppTheme.Dark;
+            return AppTheme.System;
         }
 
         public static void SetTheme(AppTheme theme)
@@ -151,7 +151,7 @@ namespace ForcePaste
 
         private class ThemeSaveData
         {
-            public string Theme { get; set; } = "Dark";
+            public string Theme { get; set; } = "System";
         }
     }
 }

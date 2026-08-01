@@ -743,7 +743,7 @@
                                        Foreground="{DynamicResource AccentBrush}"
                                        HorizontalAlignment="Right"/>
                         </Grid>
-                        <Slider x:Name="SpeedSlider" Minimum="5" Maximum="500" Value="30"
+                        <Slider x:Name="SpeedSlider" Minimum="5" Maximum="500" Value="5"
                                 TickFrequency="10" IsSnapToTickEnabled="True"
                                 Style="{StaticResource ThemeSlider}"
                                 ValueChanged="SpeedSlider_ValueChanged"/>
@@ -759,7 +759,7 @@
                                        Foreground="{DynamicResource AccentBrush}"
                                        HorizontalAlignment="Right"/>
                         </Grid>
-                        <Slider x:Name="RandomSlider" Minimum="0" Value="10"
+                        <Slider x:Name="RandomSlider" Minimum="0" Value="0"
                                 TickFrequency="5" IsSnapToTickEnabled="True"
                                 Style="{StaticResource ThemeSlider}"
                                 ValueChanged="RandomSlider_ValueChanged"/>
