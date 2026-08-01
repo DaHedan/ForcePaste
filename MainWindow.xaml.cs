@@ -2,6 +2,7 @@
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Media;
+using System.Windows.Media.Animation;
 
 namespace ForcePaste
 {
@@ -14,14 +15,22 @@ namespace ForcePaste
         {
             InitializeComponent();
             _settingsWin = new SettingsWindow();
-            // 初始化位置（屏幕右上角附近）
-            this.Left = SystemParameters.WorkArea.Right - 100;
+            this.Left = SystemParameters.WorkArea.Right - 90;
             this.Top = 100;
-            // 点击外部时取消固定 SettingsWindow
             _settingsWin.Deactivated += SettingsWin_Deactivated;
+            ThemeManager.ThemeChanged += OnThemeChanged;
         }
 
-        #region --- 悬浮球交互逻辑 ---
+        private void OnThemeChanged(object? sender, EventArgs e)
+        {
+            Dispatcher.BeginInvoke(new Action(() =>
+            {
+                // 动态资源会自动更新 Ellipse.Fill 和 Path.Fill
+                // PinRing.Stroke 也会通过 DynamicResource 自动更新
+            }));
+        }
+
+        #region --- 悬浮球交互 ---
 
         private void Window_MouseEnter(object sender, MouseEventArgs e)
         {
@@ -31,15 +40,13 @@ namespace ForcePaste
 
         private void Window_MouseLeave(object sender, MouseEventArgs e)
         {
-            // 如果已经被固定，或者鼠标正处在面板上方，则不隐藏
             if (_isPinned || _settingsWin.IsMouseOver) return;
             _settingsWin.AnimateHide();
         }
 
         private void Window_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
-            BallShape.Opacity = 0.8; // 点击反馈
-            // 记下按下时的坐标，用于判断是否发生了真正的拖拽
+            BallShape.Opacity = 0.8;
             _mouseDownPoint = e.GetScreenPosition();
         }
 
@@ -53,13 +60,7 @@ namespace ForcePaste
                 if (Math.Abs(currentPos.X - _mouseDownPoint.X) > SystemParameters.MinimumHorizontalDragDistance ||
                     Math.Abs(currentPos.Y - _mouseDownPoint.Y) > SystemParameters.MinimumVerticalDragDistance)
                 {
-                    // 拖动时隐藏设置窗口
-                    if (!_isPinned)
-                    {
-                        _settingsWin.AnimateHide();
-                    }
-
-                    // 只要位移超过了最小拖动距离，就移交系统接管拖拽
+                    if (!_isPinned) _settingsWin.AnimateHide();
                     this.DragMove();
                 }
             }
@@ -73,54 +74,56 @@ namespace ForcePaste
                            Math.Abs(currentPos.Y - _mouseDownPoint.Y) <= SystemParameters.MinimumVerticalDragDistance;
             if (isClick)
             {
-                // 执行点击事件：切换锁定状态
                 _isPinned = !_isPinned;
+                UpdatePinVisual();
                 if (_isPinned)
                 {
-                    BallShape.Fill = new System.Windows.Media.LinearGradientBrush(
-                        Color.FromRgb(0xFF, 0x7B, 0x7B),
-                        Color.FromRgb(0xE7, 0x4C, 0x3C), 45);
                     _settingsWin.AnimateShow();
                     _settingsWin.Activate();
                 }
                 else
                 {
-                    BallShape.Fill = new System.Windows.Media.LinearGradientBrush(
-                        Color.FromRgb(0x5B, 0x9F, 0xE6),
-                        Color.FromRgb(0x3A, 0x7B, 0xD5), 45);
                     if (!this.IsMouseOver) _settingsWin.AnimateHide();
                 }
             }
         }
 
+        private void UpdatePinVisual()
+        {
+            // 用简单的淡入淡出动画切换固定环
+            if (_isPinned)
+            {
+                PinRing.Opacity = 1;
+            }
+            else
+            {
+                PinRing.Opacity = 0;
+            }
+        }
+
         private void SettingsWin_Deactivated(object? sender, EventArgs e)
         {
-            // 点击外部屏幕导致面板失焦时自动取消固定
             _isPinned = false;
-            BallShape.Fill = new System.Windows.Media.LinearGradientBrush(
-                Color.FromRgb(0x5B, 0x9F, 0xE6),
-                Color.FromRgb(0x3A, 0x7B, 0xD5), 45);
+            UpdatePinVisual();
             if (!this.IsMouseOver) _settingsWin.AnimateHide();
         }
 
         private void Window_LocationChanged(object sender, EventArgs e)
         {
-            // 移动悬浮球时联动 Settings 面板位置
-            if (_settingsWin.IsVisible)
-                UpdateSettingsPosition();
+            if (_settingsWin.IsVisible) UpdateSettingsPosition();
         }
 
         private void UpdateSettingsPosition()
         {
-            // 自动停靠在悬浮球旁边，并且处理屏幕边缘情况
-            double left = this.Left - _settingsWin.Width; // 默认放左边
-            if (left < 0) left = this.Left + this.Width;  // 左侧空间不足则放右边
+            double left = this.Left - _settingsWin.Width;
+            if (left < 0) left = this.Left + this.Width;
             _settingsWin.Left = left;
             _settingsWin.Top = this.Top;
         }
 
         protected override void OnClosed(EventArgs e)
         {
+            ThemeManager.ThemeChanged -= OnThemeChanged;
             _settingsWin.Close();
             base.OnClosed(e);
         }
@@ -128,12 +131,11 @@ namespace ForcePaste
         #endregion
     }
 
-    // 辅助扩展：获取相对屏幕的绝对坐标
     public static class MouseEventExtensions
     {
         public static Point GetScreenPosition(this MouseEventArgs e)
         {
-            return e.GetPosition(null); // null表示相对于整个无界屏幕空间
+            return e.GetPosition(null);
         }
     }
 }

@@ -1,10 +1,13 @@
-using System;
-using System.Runtime.InteropServices;
-using System.Windows;
-using System.Windows.Input;
-using System.Threading.Tasks;
-using NHotkey.Wpf;
 using NHotkey;
+using NHotkey.Wpf;
+using System;
+using System.Collections.Generic;
+using System.Runtime.InteropServices;
+using System.Threading.Tasks;
+using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Input;
+using System.Windows.Media;
 using System.Windows.Media.Animation;
 
 namespace ForcePaste
@@ -20,13 +23,121 @@ namespace ForcePaste
         [DllImport("user32.dll")]
         public static extern short GetAsyncKeyState(int vKey);
 
+        // 主题按钮引用（不再用 Tag 存选中状态，避免覆盖原始 Tag 值）
+        private Button[] _themeBtns;
+        private AppTheme[] _themeBtnValues;
+
         public SettingsWindow()
         {
             InitializeComponent();
-            // 初始化 RandomSlider 的 Max 绑定到 SpeedSlider.Value
+
+            // 初始化主题按钮
+            _themeBtns = new[] { ThemeBtnLight, ThemeBtnDark, ThemeBtnSystem };
+            _themeBtnValues = new[] { AppTheme.Light, AppTheme.Dark, AppTheme.System };
+
+            // 初始化 RandomSlider 最大值
             RandomSlider.Maximum = SpeedSlider.Value;
+
+            // 注册热键
             RegisterHotkey(_hotkeyKey, _hotkeyModifiers);
+
+            // 刷新剪贴板
             RefreshClipboard();
+
+            // 设置当前主题选中状态
+            UpdateThemeSelection();
+
+            // 订阅主题变化
+            ThemeManager.ThemeChanged += OnThemeChanged;
+        }
+
+        private void OnThemeChanged(object? sender, EventArgs e)
+        {
+            Dispatcher.BeginInvoke(new Action(() =>
+            {
+                UpdateThemeSelection();
+                ApplyThemeToSidebar();
+            }));
+        }
+
+        /// <summary>
+        /// 更新主题按钮的选中外观。
+        /// 注意：绝不修改 ThemeBtn 的 Tag 属性——Tag 存的是 "Light"/"Dark"/"System"，
+        /// 用于 ThemeBtn_Click 识别点了哪个主题。选中状态只改视觉样式。
+        /// </summary>
+        private void UpdateThemeSelection()
+        {
+            var current = ThemeManager.CurrentTheme;
+            var selectedBg = TryFindResource("SidebarBtnSelectedBrush") as Brush ?? Brushes.Transparent;
+            var accentBr = TryFindResource("AccentBrush") as Brush ?? Brushes.Blue;
+            var cardBg = TryFindResource("ThemeCardBgBrush") as Brush ?? Brushes.Transparent;
+            var textBr = TryFindResource("TextBrush") as Brush ?? Brushes.White;
+
+            for (int i = 0; i < _themeBtns.Length; i++)
+            {
+                bool isSelected = _themeBtnValues[i] == current;
+                // Tag 保持原始值不动！
+
+                var border = FindVisualChild<Border>(_themeBtns[i]);
+                if (isSelected)
+                {
+                    if (border != null)
+                    {
+                        border.Background = selectedBg;
+                        border.BorderThickness = new Thickness(3, 0, 0, 0);
+                        border.BorderBrush = accentBr;
+                        border.CornerRadius = new CornerRadius(10);
+                    }
+                    _themeBtns[i].Foreground = accentBr;
+                }
+                else
+                {
+                    if (border != null)
+                    {
+                        border.Background = cardBg;
+                        border.BorderThickness = new Thickness(0);
+                        border.CornerRadius = new CornerRadius(10);
+                    }
+                    _themeBtns[i].Foreground = textBr;
+                }
+            }
+        }
+
+        private void ApplyThemeToSidebar()
+        {
+            var normalBrush = TryFindResource("SidebarBtnNormalBrush") as Brush ?? Brushes.Transparent;
+            var selectedBrush = TryFindResource("SidebarBtnSelectedBrush") as Brush ?? Brushes.Transparent;
+            var normalIcon = TryFindResource("SidebarIconNormalBrush") as Brush ?? Brushes.Gray;
+            var selectedIcon = TryFindResource("SidebarIconSelectedBrush") as Brush ?? Brushes.White;
+
+            UpdateSidebarButton(BtnClipboard, normalBrush, selectedBrush, normalIcon, selectedIcon);
+            UpdateSidebarButton(BtnPaste, normalBrush, selectedBrush, normalIcon, selectedIcon);
+            UpdateSidebarButton(BtnHotkey, normalBrush, selectedBrush, normalIcon, selectedIcon);
+            UpdateSidebarButton(BtnTheme, normalBrush, selectedBrush, normalIcon, selectedIcon);
+            UpdateSidebarButton(BtnExit, normalBrush, selectedBrush, normalIcon, selectedIcon);
+        }
+
+        private void UpdateSidebarButton(Button btn, Brush normal, Brush selected, Brush normalIcon, Brush selectedIcon)
+        {
+            bool isSelected = btn.Tag?.ToString() == "Selected";
+            var border = FindVisualChild<Border>(btn);
+            if (border != null)
+            {
+                border.Background = isSelected ? selected : normal;
+            }
+            btn.Foreground = isSelected ? selectedIcon : normalIcon;
+        }
+
+        private T? FindVisualChild<T>(DependencyObject parent) where T : DependencyObject
+        {
+            for (int i = 0; i < VisualTreeHelper.GetChildrenCount(parent); i++)
+            {
+                var child = VisualTreeHelper.GetChild(parent, i);
+                if (child is T t) return t;
+                var result = FindVisualChild<T>(child);
+                if (result != null) return result;
+            }
+            return null;
         }
 
         #region --- 热键管理 ---
@@ -48,7 +159,7 @@ namespace ForcePaste
 
         private string GetHotkeyDisplayText(Key key, ModifierKeys modifiers)
         {
-            var parts = new System.Collections.Generic.List<string>();
+            var parts = new List<string>();
             if ((modifiers & ModifierKeys.Control) != 0) parts.Add("Ctrl");
             if ((modifiers & ModifierKeys.Alt) != 0) parts.Add("Alt");
             if ((modifiers & ModifierKeys.Shift) != 0) parts.Add("Shift");
@@ -59,17 +170,14 @@ namespace ForcePaste
 
         #endregion
 
-        #region --- 模拟输入逻辑 ---
+        #region --- 模拟输入 ---
 
         private async void OnStartPaste(object? sender, HotkeyEventArgs e)
         {
             if (_isTyping) return;
             e.Handled = true;
             string clipText = string.Empty;
-            if (Clipboard.ContainsText())
-            {
-                clipText = Clipboard.GetText();
-            }
+            if (Clipboard.ContainsText()) clipText = Clipboard.GetText();
             if (string.IsNullOrEmpty(clipText)) return;
 
             int baseDelay = (int)SpeedSlider.Value;
@@ -102,10 +210,7 @@ namespace ForcePaste
                         break;
                     }
                 }
-                if (isAnyKeyDown)
-                {
-                    await Task.Delay(20);
-                }
+                if (isAnyKeyDown) await Task.Delay(20);
             } while (isAnyKeyDown);
         }
 
@@ -115,16 +220,16 @@ namespace ForcePaste
 
         private void SwitchPage(int pageIndex)
         {
-            // 隐藏所有页面
             PageClipboard.Visibility = Visibility.Collapsed;
             PagePasteSettings.Visibility = Visibility.Collapsed;
             PageHotkeySettings.Visibility = Visibility.Collapsed;
+            PageThemeSettings.Visibility = Visibility.Collapsed;
             PageExit.Visibility = Visibility.Collapsed;
 
-            // 重置所有按钮选中状态
             BtnClipboard.Tag = "Unselected";
-            BtnPasteSettings.Tag = "Unselected";
-            BtnHotkeySettings.Tag = "Unselected";
+            BtnPaste.Tag = "Unselected";
+            BtnHotkey.Tag = "Unselected";
+            BtnTheme.Tag = "Unselected";
 
             switch (pageIndex)
             {
@@ -137,36 +242,43 @@ namespace ForcePaste
                 case 1:
                     PagePasteSettings.Visibility = Visibility.Visible;
                     PageTitle.Text = "粘贴设置";
-                    BtnPasteSettings.Tag = "Selected";
+                    BtnPaste.Tag = "Selected";
                     break;
                 case 2:
                     PageHotkeySettings.Visibility = Visibility.Visible;
                     PageTitle.Text = "快捷键设置";
-                    BtnHotkeySettings.Tag = "Selected";
-                    // 清空捕获框
+                    BtnHotkey.Tag = "Selected";
                     HotkeyCaptureBox.Text = "在此处按下快捷键...";
                     HotkeyHint.Text = "直接按下你想设置的组合键即可";
-                    HotkeyHint.Foreground = new System.Windows.Media.SolidColorBrush(
-                        System.Windows.Media.Color.FromRgb(0xAA, 0xAA, 0xAA));
+                    HotkeyHint.Foreground = TryFindResource("TextSecondaryBrush") as Brush ?? Brushes.Gray;
                     BtnApplyHotkey.IsEnabled = false;
                     _pendingKey = Key.None;
                     _pendingModifiers = ModifierKeys.None;
                     break;
                 case 3:
+                    PageThemeSettings.Visibility = Visibility.Visible;
+                    PageTitle.Text = "外观设置";
+                    BtnTheme.Tag = "Selected";
+                    UpdateThemeSelection();
+                    break;
+                case 4:
                     PageExit.Visibility = Visibility.Visible;
                     PageTitle.Text = "退出";
                     break;
             }
+
+            ApplyThemeToSidebar();
         }
 
         private void BtnClipboard_Click(object sender, RoutedEventArgs e) => SwitchPage(0);
-        private void BtnPasteSettings_Click(object sender, RoutedEventArgs e) => SwitchPage(1);
-        private void BtnHotkeySettings_Click(object sender, RoutedEventArgs e) => SwitchPage(2);
-        private void BtnExit_Click(object sender, RoutedEventArgs e) => SwitchPage(3);
+        private void BtnPaste_Click(object sender, RoutedEventArgs e) => SwitchPage(1);
+        private void BtnHotkey_Click(object sender, RoutedEventArgs e) => SwitchPage(2);
+        private void BtnTheme_Click(object sender, RoutedEventArgs e) => SwitchPage(3);
+        private void BtnExit_Click(object sender, RoutedEventArgs e) => SwitchPage(4);
 
         #endregion
 
-        #region --- 剪贴板页面 ---
+        #region --- 剪贴板 ---
 
         private void RefreshClipboard()
         {
@@ -185,13 +297,12 @@ namespace ForcePaste
 
         #endregion
 
-        #region --- 粘贴设置页面 ---
+        #region --- 粘贴设置 ---
 
         private void SpeedSlider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
             if (SpeedValue == null || SpeedSlider == null || RandomSlider == null) return;
             SpeedValue.Text = ((int)SpeedSlider.Value).ToString();
-            // 波动范围最大值跟随基础速度
             RandomSlider.Maximum = SpeedSlider.Value;
             if (RandomSlider.Value > RandomSlider.Maximum)
                 RandomSlider.Value = RandomSlider.Maximum;
@@ -205,26 +316,24 @@ namespace ForcePaste
 
         #endregion
 
-        #region --- 快捷键设置页面 ---
+        #region --- 快捷键 ---
 
         private void HotkeyCaptureBox_PreviewKeyDown(object sender, KeyEventArgs e)
         {
             e.Handled = true;
 
-            // 忽略单独的修饰键
             if (e.Key == Key.LeftCtrl || e.Key == Key.RightCtrl ||
                 e.Key == Key.LeftAlt || e.Key == Key.RightAlt ||
                 e.Key == Key.LeftShift || e.Key == Key.RightShift ||
                 e.Key == Key.LWin || e.Key == Key.RWin)
                 return;
 
-            // 不允许只按字母/数字键（必须有修饰键）
             ModifierKeys mods = Keyboard.Modifiers;
             if (mods == ModifierKeys.None)
             {
                 HotkeyHint.Text = "请按住 Ctrl/Alt/Shift 再按目标键";
-                HotkeyHint.Foreground = new System.Windows.Media.SolidColorBrush(
-                    System.Windows.Media.Color.FromRgb(0xFF, 0x6B, 0x6B));
+                var dangerColor = TryFindResource("DangerBrush") as Brush;
+                HotkeyHint.Foreground = dangerColor ?? new SolidColorBrush(Color.FromRgb(0xF3, 0x8B, 0xA8));
                 return;
             }
 
@@ -233,8 +342,8 @@ namespace ForcePaste
 
             HotkeyCaptureBox.Text = GetHotkeyDisplayText(_pendingKey, _pendingModifiers);
             HotkeyHint.Text = "点击「应用快捷键」生效";
-            HotkeyHint.Foreground = new System.Windows.Media.SolidColorBrush(
-                System.Windows.Media.Color.FromRgb(0x4A, 0x90, 0xE2));
+            var accentColor = TryFindResource("AccentBrush") as Brush;
+            HotkeyHint.Foreground = accentColor ?? new SolidColorBrush(Color.FromRgb(0x89, 0xB4, 0xFA));
             BtnApplyHotkey.IsEnabled = true;
         }
 
@@ -244,8 +353,8 @@ namespace ForcePaste
             RegisterHotkey(_pendingKey, _pendingModifiers);
             CurrentHotkeyDisplay.Text = GetHotkeyDisplayText(_pendingKey, _pendingModifiers);
             HotkeyHint.Text = "快捷键已生效!";
-            HotkeyHint.Foreground = new System.Windows.Media.SolidColorBrush(
-                System.Windows.Media.Color.FromRgb(0x4C, 0xAF, 0x50));
+            var successColor = TryFindResource("SuccessBrush") as Brush;
+            HotkeyHint.Foreground = successColor ?? new SolidColorBrush(Color.FromRgb(0xA6, 0xE3, 0xA1));
             BtnApplyHotkey.IsEnabled = false;
         }
 
@@ -255,8 +364,8 @@ namespace ForcePaste
             CurrentHotkeyDisplay.Text = "Ctrl + Alt + V";
             HotkeyCaptureBox.Text = "在此处按下快捷键...";
             HotkeyHint.Text = "已恢复默认快捷键";
-            HotkeyHint.Foreground = new System.Windows.Media.SolidColorBrush(
-                System.Windows.Media.Color.FromRgb(0x4C, 0xAF, 0x50));
+            var successColor = TryFindResource("SuccessBrush") as Brush;
+            HotkeyHint.Foreground = successColor ?? new SolidColorBrush(Color.FromRgb(0xA6, 0xE3, 0xA1));
             BtnApplyHotkey.IsEnabled = false;
             _pendingKey = Key.None;
             _pendingModifiers = ModifierKeys.None;
@@ -264,7 +373,51 @@ namespace ForcePaste
 
         #endregion
 
-        #region --- 退出页面 ---
+        #region --- 主题选择 ---
+
+        /// <summary>
+        /// 通过按钮在数组中的位置来识别主题，而不是读 Tag。
+        /// Tag 保持 "Light"/"Dark"/"System" 不变（用于调试），但切换逻辑不依赖它。
+        /// </summary>
+        private void ThemeBtn_Click(object sender, RoutedEventArgs e)
+        {
+            if (sender is Button btn)
+            {
+                // 用按钮引用找对应的主题值，不依赖 Tag
+                for (int i = 0; i < _themeBtns.Length; i++)
+                {
+                    if (_themeBtns[i] == btn)
+                    {
+                        ThemeManager.SetTheme(_themeBtnValues[i]);
+                        return;
+                    }
+                }
+            }
+        }
+
+        #endregion
+
+        #region --- 字体大小 ---
+
+        private void FontSizeSlider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
+        {
+            if (FontSizeValue == null || FontSizeSlider == null) return;
+
+            double val = FontSizeSlider.Value;
+            FontSizeValue.Text = ((int)val).ToString();
+
+            // 更新资源字典中的字体大小，所有 DynamicResource 绑定的文字自动刷新
+            if (Application.Current?.Resources != null)
+            {
+                Application.Current.Resources["ContentFontSize"] = val;
+                Application.Current.Resources["TitleFontSize"] = val * 1.6;
+                Application.Current.Resources["SmallFontSize"] = val * 0.92;
+            }
+        }
+
+        #endregion
+
+        #region --- 退出 ---
 
         private void BtnExitCancel_Click(object sender, RoutedEventArgs e) => SwitchPage(0);
         private void BtnExitConfirm_Click(object sender, RoutedEventArgs e) => Application.Current.Shutdown();
@@ -275,7 +428,6 @@ namespace ForcePaste
 
         protected override void OnClosing(System.ComponentModel.CancelEventArgs e)
         {
-            // 关闭时隐藏而不是退出
             e.Cancel = true;
             Hide();
         }
@@ -291,7 +443,6 @@ namespace ForcePaste
         {
             if (Opacity <= 0) return;
             var sb = (Storyboard)Resources["FadeOut"];
-            // Bug fix: 移除旧 handler 避免内存泄漏
             sb.Completed -= FadeOut_Completed;
             sb.Completed += FadeOut_Completed;
             sb.Begin(this);
@@ -300,7 +451,6 @@ namespace ForcePaste
         private void FadeOut_Completed(object? sender, EventArgs e)
         {
             this.Visibility = Visibility.Collapsed;
-            // 移除 handler 避免累积
             var sb = (Storyboard)Resources["FadeOut"];
             sb.Completed -= FadeOut_Completed;
         }

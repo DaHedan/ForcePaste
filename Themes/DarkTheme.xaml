@@ -1,0 +1,96 @@
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:sys="clr-namespace:System;assembly=mscorlib">
+
+    <!-- 字体大小 -->
+    <sys:Double x:Key="ContentFontSize">13</sys:Double>
+    <sys:Double x:Key="TitleFontSize">22</sys:Double>
+    <sys:Double x:Key="SmallFontSize">12</sys:Double>
+
+    <!-- 侧边栏 -->
+    <Color x:Key="SidebarBg">#181825</Color>
+    <Color x:Key="SidebarBtnNormal">#181825</Color>
+    <Color x:Key="SidebarBtnHover">#252540</Color>
+    <Color x:Key="SidebarBtnSelected">#35354A</Color>
+    <Color x:Key="SidebarIconNormal">#6C7086</Color>
+    <Color x:Key="SidebarIconSelected">#CDD6F4</Color>
+
+    <!-- 内容区 -->
+    <Color x:Key="ContentBg">#1E1E2E</Color>
+    <Color x:Key="TitleColor">#CDD6F4</Color>
+    <Color x:Key="TextColor">#BAC2DE</Color>
+    <Color x:Key="TextSecondary">#6C7086</Color>
+    <Color x:Key="CardBg">#252538</Color>
+    <Color x:Key="InputBg">#1E1E2E</Color>
+    <Color x:Key="InputBorder">#35354A</Color>
+
+    <!-- 主色 -->
+    <Color x:Key="AccentColor">#89B4FA</Color>
+    <Color x:Key="AccentText">#89B4FA</Color>
+    <Color x:Key="DangerColor">#F38BA8</Color>
+    <Color x:Key="DangerText">#F38BA8</Color>
+    <Color x:Key="SuccessColor">#A6E3A1</Color>
+    <Color x:Key="SuccessText">#A6E3A1</Color>
+
+    <!-- 按钮 -->
+    <Color x:Key="BtnDefaultBg">#35354A</Color>
+    <Color x:Key="BtnDefaultFg">#CDD6F4</Color>
+    <Color x:Key="BtnAccentBg">#89B4FA</Color>
+    <Color x:Key="BtnAccentFg">#1E1E2E</Color>
+    <Color x:Key="BtnDangerBg">#F38BA8</Color>
+    <Color x:Key="BtnDangerFg">#1E1E2E</Color>
+
+    <!-- 剪贴板区域 -->
+    <Color x:Key="ClipAreaBg">#252538</Color>
+    <Color x:Key="ClipAreaFg">#BAC2DE</Color>
+
+    <!-- 滑块 -->
+    <Color x:Key="SliderTrack">#35354A</Color>
+    <Color x:Key="SliderThumb">#89B4FA</Color>
+
+    <!-- 主题选择器 -->
+    <Color x:Key="ThemeCardBg">#252538</Color>
+    <Color x:Key="ThemeCardBorder">#35354A</Color>
+    <Color x:Key="ThemeCardSelected">#89B4FA</Color>
+
+    <!-- 悬浮球 -->
+    <Color x:Key="BallFill">#313244</Color>
+    <Color x:Key="BallIcon">#FFFFFF</Color>
+    <Color x:Key="BallPinRing">#89B4FA</Color>
+
+    <!-- 退出页 -->
+    <Color x:Key="ExitEmojiBg">#252538</Color>
+
+    <!-- 笔刷 -->
+    <SolidColorBrush x:Key="SidebarBgBrush" Color="{StaticResource SidebarBg}"/>
+    <SolidColorBrush x:Key="SidebarBtnNormalBrush" Color="{StaticResource SidebarBtnNormal}"/>
+    <SolidColorBrush x:Key="SidebarBtnHoverBrush" Color="{StaticResource SidebarBtnHover}"/>
+    <SolidColorBrush x:Key="SidebarBtnSelectedBrush" Color="{StaticResource SidebarBtnSelected}"/>
+    <SolidColorBrush x:Key="SidebarIconNormalBrush" Color="{StaticResource SidebarIconNormal}"/>
+    <SolidColorBrush x:Key="SidebarIconSelectedBrush" Color="{StaticResource SidebarIconSelected}"/>
+    <SolidColorBrush x:Key="ContentBgBrush" Color="{StaticResource ContentBg}"/>
+    <SolidColorBrush x:Key="TitleBrush" Color="{StaticResource TitleColor}"/>
+    <SolidColorBrush x:Key="TextBrush" Color="{StaticResource TextColor}"/>
+    <SolidColorBrush x:Key="TextSecondaryBrush" Color="{StaticResource TextSecondary}"/>
+    <SolidColorBrush x:Key="CardBgBrush" Color="{StaticResource CardBg}"/>
+    <SolidColorBrush x:Key="InputBgBrush" Color="{StaticResource InputBg}"/>
+    <SolidColorBrush x:Key="InputBorderBrush" Color="{StaticResource InputBorder}"/>
+    <SolidColorBrush x:Key="AccentBrush" Color="{StaticResource AccentColor}"/>
+    <SolidColorBrush x:Key="DangerBrush" Color="{StaticResource DangerColor}"/>
+    <SolidColorBrush x:Key="SuccessBrush" Color="{StaticResource SuccessColor}"/>
+    <SolidColorBrush x:Key="BtnDefaultBgBrush" Color="{StaticResource BtnDefaultBg}"/>
+    <SolidColorBrush x:Key="BtnDefaultFgBrush" Color="{StaticResource BtnDefaultFg}"/>
+    <SolidColorBrush x:Key="BtnAccentBgBrush" Color="{StaticResource BtnAccentBg}"/>
+    <SolidColorBrush x:Key="BtnAccentFgBrush" Color="{StaticResource BtnAccentFg}"/>
+    <SolidColorBrush x:Key="BtnDangerBgBrush" Color="{StaticResource BtnDangerBg}"/>
+    <SolidColorBrush x:Key="BtnDangerFgBrush" Color="{StaticResource BtnDangerFg}"/>
+    <SolidColorBrush x:Key="ClipAreaBgBrush" Color="{StaticResource ClipAreaBg}"/>
+    <SolidColorBrush x:Key="ClipAreaFgBrush" Color="{StaticResource ClipAreaFg}"/>
+    <SolidColorBrush x:Key="ThemeCardBgBrush" Color="{StaticResource ThemeCardBg}"/>
+    <SolidColorBrush x:Key="ThemeCardBorderBrush" Color="{StaticResource ThemeCardBorder}"/>
+    <SolidColorBrush x:Key="ThemeCardSelectedBrush" Color="{StaticResource ThemeCardSelected}"/>
+    <SolidColorBrush x:Key="BallFillBrush" Color="{StaticResource BallFill}"/>
+    <SolidColorBrush x:Key="BallIconBrush" Color="{StaticResource BallIcon}"/>
+    <SolidColorBrush x:Key="BallPinRingBrush" Color="{StaticResource BallPinRing}"/>
+    <SolidColorBrush x:Key="ExitEmojiBgBrush" Color="{StaticResource ExitEmojiBg}"/>
+</ResourceDictionary>
