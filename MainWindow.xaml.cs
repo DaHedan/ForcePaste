@@ -1,95 +1,25 @@
 ﻿using System;
 using System.Windows;
 using System.Windows.Input;
-using System.Threading.Tasks;
-using System.Runtime.InteropServices;
-using NHotkey.Wpf;
-using NHotkey;
+using System.Windows.Media;
 
 namespace ForcePaste
 {
     public partial class MainWindow : Window
     {
         private SettingsWindow _settingsWin;
-        private bool _isTyping = false;
         private bool _isPinned = false;
-
-        [DllImport("user32.dll")]
-        public static extern short GetAsyncKeyState(int vKey);
 
         public MainWindow()
         {
             InitializeComponent();
             _settingsWin = new SettingsWindow();
-
             // 初始化位置（屏幕右上角附近）
             this.Left = SystemParameters.WorkArea.Right - 100;
             this.Top = 100;
-
-            RegisterHotkeys();
-
             // 点击外部时取消固定 SettingsWindow
             _settingsWin.Deactivated += SettingsWin_Deactivated;
         }
-
-        private void RegisterHotkeys()
-        {
-            try
-            {
-                HotkeyManager.Current.AddOrReplace("StartPaste", Key.V, ModifierKeys.Control | ModifierKeys.Alt, OnStartPaste);
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show($"热键注册失败: {ex.Message}");
-            }
-        }
-
-        #region --- 模拟输入逻辑 ---
-
-        private async void OnStartPaste(object? sender, HotkeyEventArgs e)
-        {
-            if (_isTyping) return;
-            e.Handled = true;
-
-            string clipText = string.Empty;
-            if (Clipboard.ContainsText()) clipText = Clipboard.GetText();
-            if (string.IsNullOrEmpty(clipText)) return;
-
-            int delay = _settingsWin.BaseDelay;
-            int random = _settingsWin.RandomVariance;
-            _isTyping = true;
-
-            try
-            {
-                await WaitForModifiersReleaseAsync();
-                await InputHelper.SimulateTextTypingAsync(clipText, delay, random);
-            }
-            finally
-            {
-                _isTyping = false;
-            }
-        }
-
-        private async Task WaitForModifiersReleaseAsync()
-        {
-            int[] modifiers = { 0x10, 0x11, 0x12, 0x5B, 0x5C };
-            bool isAnyKeyDown;
-            do
-            {
-                isAnyKeyDown = false;
-                foreach (var key in modifiers)
-                {
-                    if ((GetAsyncKeyState(key) & 0x8000) != 0)
-                    {
-                        isAnyKeyDown = true;
-                        break;
-                    }
-                }
-                if (isAnyKeyDown) await Task.Delay(20);
-            } while (isAnyKeyDown);
-        }
-
-        #endregion
 
         #region --- 悬浮球交互逻辑 ---
 
@@ -128,7 +58,7 @@ namespace ForcePaste
                     {
                         _settingsWin.AnimateHide();
                     }
-                    
+
                     // 只要位移超过了最小拖动距离，就移交系统接管拖拽
                     this.DragMove();
                 }
@@ -138,24 +68,26 @@ namespace ForcePaste
         private void Window_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
             BallShape.Opacity = 1.0;
-
             var currentPos = e.GetScreenPosition();
             bool isClick = Math.Abs(currentPos.X - _mouseDownPoint.X) <= SystemParameters.MinimumHorizontalDragDistance &&
                            Math.Abs(currentPos.Y - _mouseDownPoint.Y) <= SystemParameters.MinimumVerticalDragDistance;
-
             if (isClick)
             {
                 // 执行点击事件：切换锁定状态
                 _isPinned = !_isPinned;
                 if (_isPinned)
                 {
-                    BallShape.Fill = new System.Windows.Media.SolidColorBrush(System.Windows.Media.Color.FromRgb(255, 107, 107)); // 变红提示已固定
+                    BallShape.Fill = new System.Windows.Media.LinearGradientBrush(
+                        Color.FromRgb(0xFF, 0x7B, 0x7B),
+                        Color.FromRgb(0xE7, 0x4C, 0x3C), 45);
                     _settingsWin.AnimateShow();
-                    _settingsWin.Activate(); // 激活窗口以侦听 Deactivated 事件
+                    _settingsWin.Activate();
                 }
                 else
                 {
-                    BallShape.Fill = new System.Windows.Media.SolidColorBrush(System.Windows.Media.Color.FromRgb(74, 144, 226)); // 恢复蓝
+                    BallShape.Fill = new System.Windows.Media.LinearGradientBrush(
+                        Color.FromRgb(0x5B, 0x9F, 0xE6),
+                        Color.FromRgb(0x3A, 0x7B, 0xD5), 45);
                     if (!this.IsMouseOver) _settingsWin.AnimateHide();
                 }
             }
@@ -165,7 +97,9 @@ namespace ForcePaste
         {
             // 点击外部屏幕导致面板失焦时自动取消固定
             _isPinned = false;
-            BallShape.Fill = new System.Windows.Media.SolidColorBrush(System.Windows.Media.Color.FromRgb(74, 144, 226));
+            BallShape.Fill = new System.Windows.Media.LinearGradientBrush(
+                Color.FromRgb(0x5B, 0x9F, 0xE6),
+                Color.FromRgb(0x3A, 0x7B, 0xD5), 45);
             if (!this.IsMouseOver) _settingsWin.AnimateHide();
         }
 
@@ -179,11 +113,8 @@ namespace ForcePaste
         private void UpdateSettingsPosition()
         {
             // 自动停靠在悬浮球旁边，并且处理屏幕边缘情况
-            double screenWidth = SystemParameters.WorkArea.Width;
             double left = this.Left - _settingsWin.Width; // 默认放左边
-
             if (left < 0) left = this.Left + this.Width;  // 左侧空间不足则放右边
-
             _settingsWin.Left = left;
             _settingsWin.Top = this.Top;
         }
