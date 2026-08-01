@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("ForcePaste")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+24400560153a32fb250ffaf461c338777515ad27")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+e874384953ef12fe70cc18975e6e8120dbe0a9e0")]
 [assembly: System.Reflection.AssemblyProductAttribute("ForcePaste")]
 [assembly: System.Reflection.AssemblyTitleAttribute("ForcePaste")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

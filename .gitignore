@@ -1,0 +1,9 @@
+# 编译输出
+bin/
+obj/
+
+# Visual Studio 用户设置
+.vs/
+
+# 发布目录
+publish/

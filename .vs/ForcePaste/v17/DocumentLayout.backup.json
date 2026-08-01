@@ -54,11 +54,10 @@
               "Title": "SettingsWindow.xaml",
               "DocumentMoniker": "F:\\Code\\C#\\ForcePaste\\SettingsWindow.xaml",
               "RelativeDocumentMoniker": "SettingsWindow.xaml",
-              "ToolTip": "F:\\Code\\C#\\ForcePaste\\SettingsWindow.xaml*",
-              "RelativeToolTip": "SettingsWindow.xaml*",
+              "ToolTip": "F:\\Code\\C#\\ForcePaste\\SettingsWindow.xaml",
+              "RelativeToolTip": "SettingsWindow.xaml",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003549|",
-              "WhenOpened": "2026-05-27T01:54:30.709Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-05-27T01:54:30.709Z"
             },
             {
               "$type": "Document",
@@ -66,8 +65,8 @@
               "Title": "SettingsWindow.xaml.cs",
               "DocumentMoniker": "F:\\Code\\C#\\ForcePaste\\SettingsWindow.xaml.cs",
               "RelativeDocumentMoniker": "SettingsWindow.xaml.cs",
-              "ToolTip": "F:\\Code\\C#\\ForcePaste\\SettingsWindow.xaml.cs*",
-              "RelativeToolTip": "SettingsWindow.xaml.cs*",
+              "ToolTip": "F:\\Code\\C#\\ForcePaste\\SettingsWindow.xaml.cs",
+              "RelativeToolTip": "SettingsWindow.xaml.cs",
               "ViewState": "AgIAAHUAAAAAAAAAAAD4vwAAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2026-05-27T01:54:49.296Z",
@@ -79,12 +78,11 @@
               "Title": "MainWindow.xaml.cs",
               "DocumentMoniker": "F:\\Code\\C#\\ForcePaste\\MainWindow.xaml.cs",
               "RelativeDocumentMoniker": "MainWindow.xaml.cs",
-              "ToolTip": "F:\\Code\\C#\\ForcePaste\\MainWindow.xaml.cs*",
-              "RelativeToolTip": "MainWindow.xaml.cs*",
+              "ToolTip": "F:\\Code\\C#\\ForcePaste\\MainWindow.xaml.cs",
+              "RelativeToolTip": "MainWindow.xaml.cs",
               "ViewState": "AgIAAGEAAAAAAAAAAAAMwM8AAAABAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-05-13T10:43:27.685Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-05-13T10:43:27.685Z"
             },
             {
               "$type": "Document",
@@ -95,8 +93,7 @@
               "ToolTip": "F:\\Code\\C#\\ForcePaste\\MainWindow.xaml",
               "RelativeToolTip": "MainWindow.xaml",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003549|",
-              "WhenOpened": "2026-05-13T10:43:32.572Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-05-13T10:43:32.572Z"
             },
             {
               "$type": "Document",
@@ -108,8 +105,7 @@
               "RelativeToolTip": "InputHelper.cs",
               "ViewState": "AgIAAA8AAAAAAAAAAAAYwIsAAAABAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-05-13T11:07:03.673Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-05-13T11:07:03.673Z"
             }
           ]
         }
