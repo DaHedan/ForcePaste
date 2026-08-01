@@ -19,6 +19,8 @@ namespace ForcePaste
         private ModifierKeys _hotkeyModifiers = ModifierKeys.Control | ModifierKeys.Alt;
         private Key _pendingKey = Key.None;
         private ModifierKeys _pendingModifiers = ModifierKeys.None;
+        private AppSettings _settings;
+        private bool _loaded = false; // 标记是否已完成初始化加载
 
         [DllImport("user32.dll")]
         public static extern short GetAsyncKeyState(int vKey);
@@ -30,6 +32,10 @@ namespace ForcePaste
         public SettingsWindow()
         {
             InitializeComponent();
+
+            // 加载持久化设置
+            _settings = SettingsService.Load();
+            ApplySettingsToUI();
 
             // 初始化主题按钮
             _themeBtns = new[] { ThemeBtnLight, ThemeBtnDark, ThemeBtnSystem };
@@ -49,6 +55,50 @@ namespace ForcePaste
 
             // 订阅主题变化
             ThemeManager.ThemeChanged += OnThemeChanged;
+
+            _loaded = true;
+        }
+
+        /// <summary>
+        /// 将持久化设置应用到 UI 控件
+        /// </summary>
+        private void ApplySettingsToUI()
+        {
+            // 快捷键
+            _hotkeyKey = SettingsService.StringToKey(_settings.HotkeyKey);
+            _hotkeyModifiers = SettingsService.StringToModifiers(_settings.HotkeyModifiers);
+
+            // 粘贴设置滑块（先设 Speed，使 RandomSlider.Maximum 自动更新到正确值）
+            SpeedSlider.Value = _settings.SpeedDelay;
+            SpeedValue.Text = ((int)_settings.SpeedDelay).ToString();
+            // Speed 已更新 Maximum，此时再赋 Random 不会被截断
+            RandomSlider.Value = _settings.RandomVariance;
+            RandomValue.Text = ((int)_settings.RandomVariance).ToString();
+
+            // 字体大小
+            FontSizeSlider.Value = _settings.FontSize;
+            FontSizeValue.Text = ((int)_settings.FontSize).ToString();
+            ApplyFontSize(_settings.FontSize);
+
+            // 显示当前快捷键
+            CurrentHotkeyDisplay.Text = GetHotkeyDisplayText(_hotkeyKey, _hotkeyModifiers);
+        }
+
+        /// <summary>
+        /// 保存当前设置到持久化文件
+        /// </summary>
+        private void SaveSettings()
+        {
+            if (!_loaded) return; // 初始化期间不保存
+
+            _settings.HotkeyKey = SettingsService.KeyToString(_hotkeyKey);
+            _settings.HotkeyModifiers = SettingsService.ModifiersToString(_hotkeyModifiers);
+            _settings.SpeedDelay = SpeedSlider.Value;
+            _settings.RandomVariance = RandomSlider.Value;
+            _settings.FontSize = FontSizeSlider.Value;
+            _settings.Theme = ThemeManager.CurrentTheme.ToString();
+
+            SettingsService.Save(_settings);
         }
 
         private void OnThemeChanged(object? sender, EventArgs e)
@@ -57,6 +107,7 @@ namespace ForcePaste
             {
                 UpdateThemeSelection();
                 ApplyThemeToSidebar();
+                SaveSettings(); // 主题切换时保存
             }));
         }
 
@@ -306,12 +357,14 @@ namespace ForcePaste
             RandomSlider.Maximum = SpeedSlider.Value;
             if (RandomSlider.Value > RandomSlider.Maximum)
                 RandomSlider.Value = RandomSlider.Maximum;
+            SaveSettings(); // 保存
         }
 
         private void RandomSlider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
             if (RandomValue == null || RandomSlider == null) return;
             RandomValue.Text = ((int)RandomSlider.Value).ToString();
+            SaveSettings(); // 保存
         }
 
         #endregion
@@ -356,6 +409,7 @@ namespace ForcePaste
             var successColor = TryFindResource("SuccessBrush") as Brush;
             HotkeyHint.Foreground = successColor ?? new SolidColorBrush(Color.FromRgb(0xA6, 0xE3, 0xA1));
             BtnApplyHotkey.IsEnabled = false;
+            SaveSettings(); // 保存
         }
 
         private void BtnResetHotkey_Click(object sender, RoutedEventArgs e)
@@ -369,6 +423,7 @@ namespace ForcePaste
             BtnApplyHotkey.IsEnabled = false;
             _pendingKey = Key.None;
             _pendingModifiers = ModifierKeys.None;
+            SaveSettings(); // 保存
         }
 
         #endregion
@@ -389,6 +444,7 @@ namespace ForcePaste
                     if (_themeBtns[i] == btn)
                     {
                         ThemeManager.SetTheme(_themeBtnValues[i]);
+                        // SaveSettings 会在 OnThemeChanged 回调中调用
                         return;
                     }
                 }
@@ -406,7 +462,15 @@ namespace ForcePaste
             double val = FontSizeSlider.Value;
             FontSizeValue.Text = ((int)val).ToString();
 
-            // 更新资源字典中的字体大小，所有 DynamicResource 绑定的文字自动刷新
+            ApplyFontSize(val);
+            SaveSettings(); // 保存
+        }
+
+        /// <summary>
+        /// 应用字体大小到全局资源
+        /// </summary>
+        private void ApplyFontSize(double val)
+        {
             if (Application.Current?.Resources != null)
             {
                 Application.Current.Resources["ContentFontSize"] = val;
