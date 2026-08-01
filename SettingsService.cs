@@ -7,7 +7,7 @@ namespace ForcePaste
 {
     /// <summary>
     /// 应用设置持久化服务。
-    /// 设置保存为 JSON 文件：%APPDATA%/ForcePaste/settings.json
+    /// 设置保存为 JSON 文件：程序目录/config/settings.json
     /// </summary>
     public class AppSettings
     {
@@ -34,9 +34,9 @@ namespace ForcePaste
 
         static SettingsService()
         {
-            SettingsDir = Path.Combine(
-                Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
-                "ForcePaste");
+            // 使用程序可执行文件所在目录，实现便携化
+            string appDir = AppDomain.CurrentDomain.BaseDirectory;
+            SettingsDir = Path.Combine(appDir, "config");
             SettingsFilePath = Path.Combine(SettingsDir, "settings.json");
         }
 

@@ -33,8 +33,9 @@ namespace ForcePaste
 
         static ThemeManager()
         {
-            var appData = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
-            var dir = Path.Combine(appData, "ForcePaste");
+            // 使用程序可执行文件所在目录，实现便携化
+            var appDir = AppDomain.CurrentDomain.BaseDirectory;
+            var dir = Path.Combine(appDir, "config");
             ThemeFilePath = Path.Combine(dir, "theme.json");
         }
 
