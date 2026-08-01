@@ -93,4 +93,6 @@
     <SolidColorBrush x:Key="BallIconBrush" Color="{StaticResource BallIcon}"/>
     <SolidColorBrush x:Key="BallPinRingBrush" Color="{StaticResource BallPinRing}"/>
     <SolidColorBrush x:Key="ExitEmojiBgBrush" Color="{StaticResource ExitEmojiBg}"/>
+    <SolidColorBrush x:Key="SliderTrackBrush" Color="{StaticResource SliderTrack}"/>
+    <SolidColorBrush x:Key="SliderThumbBrush" Color="{StaticResource SliderThumb}"/>
 </ResourceDictionary>

@@ -13,6 +13,7 @@
             <DoubleAnimation Storyboard.TargetProperty="Opacity" To="0" Duration="0:0:0.2"/>
         </Storyboard>
 
+        <!-- ===== 侧边栏按钮：强发光悬停 + 按压缩放 ===== -->
         <Style x:Key="SidebarButton" TargetType="Button">
             <Setter Property="Width" Value="52"/>
             <Setter Property="Height" Value="52"/>
@@ -24,14 +25,84 @@
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="Button">
-                        <Border x:Name="bg" Background="{TemplateBinding Background}"
-                                CornerRadius="10" Margin="9,2">
-                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                        </Border>
+                        <Grid Margin="8,2">
+                            <!-- 发光层 -->
+                            <Border x:Name="glowLayer"
+                                    Background="{TemplateBinding Background}"
+                                    CornerRadius="10"
+                                    Opacity="0"
+                                    IsHitTestVisible="False">
+                                <Border.Effect>
+                                    <DropShadowEffect BlurRadius="20" ShadowDepth="0"
+                                                      Color="{DynamicResource AccentColor}" Opacity="1"/>
+                                </Border.Effect>
+                            </Border>
+                            <!-- 内容层 -->
+                            <Border x:Name="bg" Background="{TemplateBinding Background}"
+                                    CornerRadius="10"
+                                    RenderTransformOrigin="0.5,0.5">
+                                <Border.RenderTransform>
+                                    <ScaleTransform x:Name="scale" ScaleX="1" ScaleY="1"/>
+                                </Border.RenderTransform>
+                                <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                            </Border>
+                        </Grid>
                         <ControlTemplate.Triggers>
                             <Trigger Property="IsMouseOver" Value="True">
+                                <Trigger.EnterActions>
+                                    <BeginStoryboard>
+                                        <Storyboard>
+                                            <DoubleAnimation Storyboard.TargetName="glowLayer"
+                                                             Storyboard.TargetProperty="Opacity"
+                                                             To="0.8" Duration="0:0:0.18"/>
+                                        </Storyboard>
+                                    </BeginStoryboard>
+                                </Trigger.EnterActions>
+                                <Trigger.ExitActions>
+                                    <BeginStoryboard>
+                                        <Storyboard>
+                                            <DoubleAnimation Storyboard.TargetName="glowLayer"
+                                                             Storyboard.TargetProperty="Opacity"
+                                                             To="0" Duration="0:0:0.25"/>
+                                        </Storyboard>
+                                    </BeginStoryboard>
+                                </Trigger.ExitActions>
                                 <Setter TargetName="bg" Property="Background"
                                         Value="{DynamicResource SidebarBtnHoverBrush}"/>
+                            </Trigger>
+                            <Trigger Property="IsPressed" Value="True">
+                                <Trigger.EnterActions>
+                                    <BeginStoryboard>
+                                        <Storyboard>
+                                            <DoubleAnimation Storyboard.TargetName="scale"
+                                                             Storyboard.TargetProperty="ScaleX"
+                                                             To="0.9" Duration="0:0:0.08"/>
+                                            <DoubleAnimation Storyboard.TargetName="scale"
+                                                             Storyboard.TargetProperty="ScaleY"
+                                                             To="0.9" Duration="0:0:0.08"/>
+                                        </Storyboard>
+                                    </BeginStoryboard>
+                                </Trigger.EnterActions>
+                                <Trigger.ExitActions>
+                                    <BeginStoryboard>
+                                        <Storyboard>
+                                            <DoubleAnimation Storyboard.TargetName="scale"
+                                                             Storyboard.TargetProperty="ScaleX"
+                                                             To="1" Duration="0:0:0.15">
+                                                <DoubleAnimation.EasingFunction>
+                                                    <BackEase Amplitude="0.3"/>
+                                                </DoubleAnimation.EasingFunction>
+                                            </DoubleAnimation>
+                                            <DoubleAnimation Storyboard.TargetName="scale"
+                                                             Storyboard.TargetProperty="ScaleY"
+                                                             To="1" Duration="0:0:0.15">
+                                                <DoubleAnimation.EasingFunction>
+                                                    <BackEase Amplitude="0.3"/>
+                                                </DoubleAnimation.EasingFunction>
+                                            </DoubleAnimation>
+                                        </Storyboard>
+                                    </BeginStoryboard>
+                                </Trigger.ExitActions>
                             </Trigger>
                             <Trigger Property="Tag" Value="Selected">
                                 <Setter TargetName="bg" Property="Background"
@@ -45,6 +116,7 @@
             </Setter>
         </Style>
 
+        <!-- ===== 主题选择按钮：强发光悬停 + 按压缩放 ===== -->
         <Style x:Key="ThemeBtn" TargetType="Button">
             <Setter Property="Height" Value="56"/>
             <Setter Property="Background" Value="{DynamicResource ThemeCardBgBrush}"/>
@@ -56,15 +128,88 @@
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="Button">
-                        <Border x:Name="bg" Background="{TemplateBinding Background}"
-                                CornerRadius="10" Padding="12,0">
-                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                        </Border>
+                        <Grid>
+                            <Border x:Name="glowLayer"
+                                    Background="{TemplateBinding Background}"
+                                    CornerRadius="10"
+                                    Opacity="0"
+                                    IsHitTestVisible="False">
+                                <Border.Effect>
+                                    <DropShadowEffect BlurRadius="24" ShadowDepth="0"
+                                                      Color="{DynamicResource AccentColor}" Opacity="1"/>
+                                </Border.Effect>
+                            </Border>
+                            <Border x:Name="bg" Background="{TemplateBinding Background}"
+                                    CornerRadius="10" Padding="12,0"
+                                    RenderTransformOrigin="0.5,0.5">
+                                <Border.RenderTransform>
+                                    <ScaleTransform x:Name="scale" ScaleX="1" ScaleY="1"/>
+                                </Border.RenderTransform>
+                                <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                            </Border>
+                        </Grid>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Trigger.EnterActions>
+                                    <BeginStoryboard>
+                                        <Storyboard>
+                                            <DoubleAnimation Storyboard.TargetName="glowLayer"
+                                                             Storyboard.TargetProperty="Opacity"
+                                                             To="0.7" Duration="0:0:0.2"/>
+                                        </Storyboard>
+                                    </BeginStoryboard>
+                                </Trigger.EnterActions>
+                                <Trigger.ExitActions>
+                                    <BeginStoryboard>
+                                        <Storyboard>
+                                            <DoubleAnimation Storyboard.TargetName="glowLayer"
+                                                             Storyboard.TargetProperty="Opacity"
+                                                             To="0" Duration="0:0:0.25"/>
+                                        </Storyboard>
+                                    </BeginStoryboard>
+                                </Trigger.ExitActions>
+                            </Trigger>
+                            <Trigger Property="IsPressed" Value="True">
+                                <Trigger.EnterActions>
+                                    <BeginStoryboard>
+                                        <Storyboard>
+                                            <DoubleAnimation Storyboard.TargetName="scale"
+                                                             Storyboard.TargetProperty="ScaleX"
+                                                             To="0.95" Duration="0:0:0.08"/>
+                                            <DoubleAnimation Storyboard.TargetName="scale"
+                                                             Storyboard.TargetProperty="ScaleY"
+                                                             To="0.95" Duration="0:0:0.08"/>
+                                        </Storyboard>
+                                    </BeginStoryboard>
+                                </Trigger.EnterActions>
+                                <Trigger.ExitActions>
+                                    <BeginStoryboard>
+                                        <Storyboard>
+                                            <DoubleAnimation Storyboard.TargetName="scale"
+                                                             Storyboard.TargetProperty="ScaleX"
+                                                             To="1" Duration="0:0:0.15">
+                                                <DoubleAnimation.EasingFunction>
+                                                    <BackEase Amplitude="0.3"/>
+                                                </DoubleAnimation.EasingFunction>
+                                            </DoubleAnimation>
+                                            <DoubleAnimation Storyboard.TargetName="scale"
+                                                             Storyboard.TargetProperty="ScaleY"
+                                                             To="1" Duration="0:0:0.15">
+                                                <DoubleAnimation.EasingFunction>
+                                                    <BackEase Amplitude="0.3"/>
+                                                </DoubleAnimation.EasingFunction>
+                                            </DoubleAnimation>
+                                        </Storyboard>
+                                    </BeginStoryboard>
+                                </Trigger.ExitActions>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
                     </ControlTemplate>
                 </Setter.Value>
             </Setter>
         </Style>
 
+        <!-- ===== 主操作按钮（应用快捷键）：强发光 + 按压 ===== -->
         <Style x:Key="AccentBtn" TargetType="Button">
             <Setter Property="Background" Value="{DynamicResource BtnAccentBgBrush}"/>
             <Setter Property="Foreground" Value="{DynamicResource BtnAccentFgBrush}"/>
@@ -73,23 +218,432 @@
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="Button">
-                        <Border x:Name="bg" Background="{TemplateBinding Background}"
-                                CornerRadius="9">
-                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"
-                                              Margin="{TemplateBinding Padding}"/>
-                        </Border>
+                        <Grid>
+                            <Border x:Name="glowLayer"
+                                    Background="{TemplateBinding Background}"
+                                    CornerRadius="9"
+                                    Opacity="0.4"
+                                    IsHitTestVisible="False">
+                                <Border.Effect>
+                                    <DropShadowEffect BlurRadius="24" ShadowDepth="0"
+                                                      Color="{DynamicResource AccentColor}" Opacity="1"/>
+                                </Border.Effect>
+                            </Border>
+                            <Border x:Name="bg" Background="{TemplateBinding Background}"
+                                    CornerRadius="9"
+                                    RenderTransformOrigin="0.5,0.5">
+                                <Border.RenderTransform>
+                                    <ScaleTransform x:Name="scale" ScaleX="1" ScaleY="1"/>
+                                </Border.RenderTransform>
+                                <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"
+                                                  Margin="{TemplateBinding Padding}"/>
+                            </Border>
+                        </Grid>
                         <ControlTemplate.Triggers>
                             <Trigger Property="IsEnabled" Value="False">
+                                <Setter TargetName="glowLayer" Property="Opacity" Value="0"/>
                                 <Setter TargetName="bg" Property="Background"
                                         Value="{DynamicResource BtnDefaultBgBrush}"/>
-                                <Setter TargetName="bg" Property="Opacity" Value="1"/>
                                 <Setter Property="Foreground"
                                         Value="{DynamicResource TextBrush}"/>
                             </Trigger>
                             <Trigger Property="IsMouseOver" Value="True">
-                                <Setter TargetName="bg" Property="Opacity" Value="0.9"/>
+                                <Trigger.EnterActions>
+                                    <BeginStoryboard>
+                                        <Storyboard>
+                                            <DoubleAnimation Storyboard.TargetName="glowLayer"
+                                                             Storyboard.TargetProperty="Opacity"
+                                                             To="0.85" Duration="0:0:0.2"/>
+                                        </Storyboard>
+                                    </BeginStoryboard>
+                                </Trigger.EnterActions>
+                                <Trigger.ExitActions>
+                                    <BeginStoryboard>
+                                        <Storyboard>
+                                            <DoubleAnimation Storyboard.TargetName="glowLayer"
+                                                             Storyboard.TargetProperty="Opacity"
+                                                             To="0.4" Duration="0:0:0.2"/>
+                                        </Storyboard>
+                                    </BeginStoryboard>
+                                </Trigger.ExitActions>
+                            </Trigger>
+                            <Trigger Property="IsPressed" Value="True">
+                                <Trigger.EnterActions>
+                                    <BeginStoryboard>
+                                        <Storyboard>
+                                            <DoubleAnimation Storyboard.TargetName="scale"
+                                                             Storyboard.TargetProperty="ScaleX"
+                                                             To="0.95" Duration="0:0:0.08"/>
+                                            <DoubleAnimation Storyboard.TargetName="scale"
+                                                             Storyboard.TargetProperty="ScaleY"
+                                                             To="0.95" Duration="0:0:0.08"/>
+                                        </Storyboard>
+                                    </BeginStoryboard>
+                                </Trigger.EnterActions>
+                                <Trigger.ExitActions>
+                                    <BeginStoryboard>
+                                        <Storyboard>
+                                            <DoubleAnimation Storyboard.TargetName="scale"
+                                                             Storyboard.TargetProperty="ScaleX"
+                                                             To="1" Duration="0:0:0.15">
+                                                <DoubleAnimation.EasingFunction>
+                                                    <BackEase Amplitude="0.3"/>
+                                                </DoubleAnimation.EasingFunction>
+                                            </DoubleAnimation>
+                                            <DoubleAnimation Storyboard.TargetName="scale"
+                                                             Storyboard.TargetProperty="ScaleY"
+                                                             To="1" Duration="0:0:0.15">
+                                                <DoubleAnimation.EasingFunction>
+                                                    <BackEase Amplitude="0.3"/>
+                                                </DoubleAnimation.EasingFunction>
+                                            </DoubleAnimation>
+                                        </Storyboard>
+                                    </BeginStoryboard>
+                                </Trigger.ExitActions>
                             </Trigger>
                         </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <!-- ===== 默认按钮（刷新/取消）：强发光 + 按压 ===== -->
+        <Style x:Key="DefaultBtn" TargetType="Button">
+            <Setter Property="Background" Value="{DynamicResource BtnDefaultBgBrush}"/>
+            <Setter Property="Foreground" Value="{DynamicResource BtnDefaultFgBrush}"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Grid>
+                            <Border x:Name="glowLayer"
+                                    Background="{TemplateBinding Background}"
+                                    CornerRadius="9"
+                                    Opacity="0"
+                                    IsHitTestVisible="False">
+                                <Border.Effect>
+                                    <DropShadowEffect BlurRadius="18" ShadowDepth="0"
+                                                      Color="{DynamicResource AccentColor}" Opacity="1"/>
+                                </Border.Effect>
+                            </Border>
+                            <Border x:Name="bg" Background="{TemplateBinding Background}"
+                                    CornerRadius="9"
+                                    RenderTransformOrigin="0.5,0.5">
+                                <Border.RenderTransform>
+                                    <ScaleTransform x:Name="scale" ScaleX="1" ScaleY="1"/>
+                                </Border.RenderTransform>
+                                <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"
+                                                  Margin="{TemplateBinding Padding}"/>
+                            </Border>
+                        </Grid>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Trigger.EnterActions>
+                                    <BeginStoryboard>
+                                        <Storyboard>
+                                            <DoubleAnimation Storyboard.TargetName="glowLayer"
+                                                             Storyboard.TargetProperty="Opacity"
+                                                             To="0.7" Duration="0:0:0.2"/>
+                                        </Storyboard>
+                                    </BeginStoryboard>
+                                </Trigger.EnterActions>
+                                <Trigger.ExitActions>
+                                    <BeginStoryboard>
+                                        <Storyboard>
+                                            <DoubleAnimation Storyboard.TargetName="glowLayer"
+                                                             Storyboard.TargetProperty="Opacity"
+                                                             To="0" Duration="0:0:0.25"/>
+                                        </Storyboard>
+                                    </BeginStoryboard>
+                                </Trigger.ExitActions>
+                            </Trigger>
+                            <Trigger Property="IsPressed" Value="True">
+                                <Trigger.EnterActions>
+                                    <BeginStoryboard>
+                                        <Storyboard>
+                                            <DoubleAnimation Storyboard.TargetName="scale"
+                                                             Storyboard.TargetProperty="ScaleX"
+                                                             To="0.95" Duration="0:0:0.08"/>
+                                            <DoubleAnimation Storyboard.TargetName="scale"
+                                                             Storyboard.TargetProperty="ScaleY"
+                                                             To="0.95" Duration="0:0:0.08"/>
+                                        </Storyboard>
+                                    </BeginStoryboard>
+                                </Trigger.EnterActions>
+                                <Trigger.ExitActions>
+                                    <BeginStoryboard>
+                                        <Storyboard>
+                                            <DoubleAnimation Storyboard.TargetName="scale"
+                                                             Storyboard.TargetProperty="ScaleX"
+                                                             To="1" Duration="0:0:0.15">
+                                                <DoubleAnimation.EasingFunction>
+                                                    <BackEase Amplitude="0.3"/>
+                                                </DoubleAnimation.EasingFunction>
+                                            </DoubleAnimation>
+                                            <DoubleAnimation Storyboard.TargetName="scale"
+                                                             Storyboard.TargetProperty="ScaleY"
+                                                             To="1" Duration="0:0:0.15">
+                                                <DoubleAnimation.EasingFunction>
+                                                    <BackEase Amplitude="0.3"/>
+                                                </DoubleAnimation.EasingFunction>
+                                            </DoubleAnimation>
+                                        </Storyboard>
+                                    </BeginStoryboard>
+                                </Trigger.ExitActions>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <!-- ===== 危险按钮（确认退出）：红色强发光 + 按压 ===== -->
+        <Style x:Key="DangerBtn" TargetType="Button">
+            <Setter Property="Background" Value="{DynamicResource BtnDangerBgBrush}"/>
+            <Setter Property="Foreground" Value="{DynamicResource BtnDangerFgBrush}"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Grid>
+                            <Border x:Name="glowLayer"
+                                    Background="{TemplateBinding Background}"
+                                    CornerRadius="9"
+                                    Opacity="0.3"
+                                    IsHitTestVisible="False">
+                                <Border.Effect>
+                                    <DropShadowEffect BlurRadius="20" ShadowDepth="0"
+                                                      Color="{DynamicResource DangerColor}" Opacity="1"/>
+                                </Border.Effect>
+                            </Border>
+                            <Border x:Name="bg" Background="{TemplateBinding Background}"
+                                    CornerRadius="9"
+                                    RenderTransformOrigin="0.5,0.5">
+                                <Border.RenderTransform>
+                                    <ScaleTransform x:Name="scale" ScaleX="1" ScaleY="1"/>
+                                </Border.RenderTransform>
+                                <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"
+                                                  Margin="{TemplateBinding Padding}"/>
+                            </Border>
+                        </Grid>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Trigger.EnterActions>
+                                    <BeginStoryboard>
+                                        <Storyboard>
+                                            <DoubleAnimation Storyboard.TargetName="glowLayer"
+                                                             Storyboard.TargetProperty="Opacity"
+                                                             To="0.8" Duration="0:0:0.2"/>
+                                        </Storyboard>
+                                    </BeginStoryboard>
+                                </Trigger.EnterActions>
+                                <Trigger.ExitActions>
+                                    <BeginStoryboard>
+                                        <Storyboard>
+                                            <DoubleAnimation Storyboard.TargetName="glowLayer"
+                                                             Storyboard.TargetProperty="Opacity"
+                                                             To="0.3" Duration="0:0:0.25"/>
+                                        </Storyboard>
+                                    </BeginStoryboard>
+                                </Trigger.ExitActions>
+                            </Trigger>
+                            <Trigger Property="IsPressed" Value="True">
+                                <Trigger.EnterActions>
+                                    <BeginStoryboard>
+                                        <Storyboard>
+                                            <DoubleAnimation Storyboard.TargetName="scale"
+                                                             Storyboard.TargetProperty="ScaleX"
+                                                             To="0.95" Duration="0:0:0.08"/>
+                                            <DoubleAnimation Storyboard.TargetName="scale"
+                                                             Storyboard.TargetProperty="ScaleY"
+                                                             To="0.95" Duration="0:0:0.08"/>
+                                        </Storyboard>
+                                    </BeginStoryboard>
+                                </Trigger.EnterActions>
+                                <Trigger.ExitActions>
+                                    <BeginStoryboard>
+                                        <Storyboard>
+                                            <DoubleAnimation Storyboard.TargetName="scale"
+                                                             Storyboard.TargetProperty="ScaleX"
+                                                             To="1" Duration="0:0:0.15">
+                                                <DoubleAnimation.EasingFunction>
+                                                    <BackEase Amplitude="0.3"/>
+                                                </DoubleAnimation.EasingFunction>
+                                            </DoubleAnimation>
+                                            <DoubleAnimation Storyboard.TargetName="scale"
+                                                             Storyboard.TargetProperty="ScaleY"
+                                                             To="1" Duration="0:0:0.15">
+                                                <DoubleAnimation.EasingFunction>
+                                                    <BackEase Amplitude="0.3"/>
+                                                </DoubleAnimation.EasingFunction>
+                                            </DoubleAnimation>
+                                        </Storyboard>
+                                    </BeginStoryboard>
+                                </Trigger.ExitActions>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <!-- ===== 文字按钮（恢复默认等次要操作） ===== -->
+        <Style x:Key="TextBtn" TargetType="Button">
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="Foreground" Value="{DynamicResource AccentBrush}"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Grid RenderTransformOrigin="0.5,0.5">
+                            <Grid.RenderTransform>
+                                <ScaleTransform x:Name="scale" ScaleX="1" ScaleY="1"/>
+                            </Grid.RenderTransform>
+                            <!-- 发光底层 -->
+                            <Border x:Name="glowLayer"
+                                    CornerRadius="6"
+                                    Opacity="0"
+                                    IsHitTestVisible="False"
+                                    Background="{DynamicResource AccentBrush}">
+                                <Border.Effect>
+                                    <DropShadowEffect BlurRadius="14" ShadowDepth="0"
+                                                      Color="{DynamicResource AccentColor}" Opacity="1"/>
+                                </Border.Effect>
+                            </Border>
+                            <ContentPresenter x:Name="content"
+                                              HorizontalAlignment="Center" VerticalAlignment="Center"
+                                              Margin="{TemplateBinding Padding}"/>
+                        </Grid>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Trigger.EnterActions>
+                                    <BeginStoryboard>
+                                        <Storyboard>
+                                            <DoubleAnimation Storyboard.TargetName="glowLayer"
+                                                             Storyboard.TargetProperty="Opacity"
+                                                             To="0.3" Duration="0:0:0.2"/>
+                                        </Storyboard>
+                                    </BeginStoryboard>
+                                </Trigger.EnterActions>
+                                <Trigger.ExitActions>
+                                    <BeginStoryboard>
+                                        <Storyboard>
+                                            <DoubleAnimation Storyboard.TargetName="glowLayer"
+                                                             Storyboard.TargetProperty="Opacity"
+                                                             To="0" Duration="0:0:0.25"/>
+                                        </Storyboard>
+                                    </BeginStoryboard>
+                                </Trigger.ExitActions>
+                            </Trigger>
+                            <Trigger Property="IsPressed" Value="True">
+                                <Trigger.EnterActions>
+                                    <BeginStoryboard>
+                                        <Storyboard>
+                                            <DoubleAnimation Storyboard.TargetName="scale"
+                                                             Storyboard.TargetProperty="ScaleX"
+                                                             To="0.95" Duration="0:0:0.08"/>
+                                            <DoubleAnimation Storyboard.TargetName="scale"
+                                                             Storyboard.TargetProperty="ScaleY"
+                                                             To="0.95" Duration="0:0:0.08"/>
+                                        </Storyboard>
+                                    </BeginStoryboard>
+                                </Trigger.EnterActions>
+                                <Trigger.ExitActions>
+                                    <BeginStoryboard>
+                                        <Storyboard>
+                                            <DoubleAnimation Storyboard.TargetName="scale"
+                                                             Storyboard.TargetProperty="ScaleX"
+                                                             To="1" Duration="0:0:0.15">
+                                                <DoubleAnimation.EasingFunction>
+                                                    <BackEase Amplitude="0.3"/>
+                                                </DoubleAnimation.EasingFunction>
+                                            </DoubleAnimation>
+                                            <DoubleAnimation Storyboard.TargetName="scale"
+                                                             Storyboard.TargetProperty="ScaleY"
+                                                             To="1" Duration="0:0:0.15">
+                                                <DoubleAnimation.EasingFunction>
+                                                    <BackEase Amplitude="0.3"/>
+                                                </DoubleAnimation.EasingFunction>
+                                            </DoubleAnimation>
+                                        </Storyboard>
+                                    </BeginStoryboard>
+                                </Trigger.ExitActions>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <!-- ===== 自定义滑块样式 ===== -->
+        <Style x:Key="ThemeSlider" TargetType="Slider">
+            <Setter Property="Height" Value="28"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Slider">
+                        <Grid VerticalAlignment="Center">
+                            <Track x:Name="PART_Track">
+                                <Track.DecreaseRepeatButton>
+                                    <RepeatButton Command="Slider.DecreaseLarge">
+                                        <RepeatButton.Template>
+                                            <ControlTemplate TargetType="RepeatButton">
+                                                <Border Height="5" CornerRadius="3"
+                                                        Background="{DynamicResource AccentBrush}"
+                                                        Opacity="0.6"/>
+                                            </ControlTemplate>
+                                        </RepeatButton.Template>
+                                    </RepeatButton>
+                                </Track.DecreaseRepeatButton>
+                                <Track.Thumb>
+                                    <Thumb>
+                                        <Thumb.Template>
+                                            <ControlTemplate TargetType="Thumb">
+                                                <Grid Width="22" Height="22">
+                                                    <!-- 发光光晕 -->
+                                                    <Ellipse x:Name="glow" Width="22" Height="22"
+                                                             Fill="{DynamicResource SliderThumbBrush}"
+                                                             Opacity="0.35">
+                                                        <Ellipse.Effect>
+                                                            <DropShadowEffect BlurRadius="14" ShadowDepth="0"
+                                                                              Color="{DynamicResource AccentColor}" Opacity="1"/>
+                                                        </Ellipse.Effect>
+                                                    </Ellipse>
+                                                    <!-- 实体圆点 -->
+                                                    <Ellipse x:Name="thumb" Width="14" Height="14"
+                                                             Fill="{DynamicResource SliderThumbBrush}"
+                                                             HorizontalAlignment="Center" VerticalAlignment="Center">
+                                                        <Ellipse.Effect>
+                                                            <DropShadowEffect BlurRadius="4" ShadowDepth="1" Opacity="0.15"/>
+                                                        </Ellipse.Effect>
+                                                    </Ellipse>
+                                                </Grid>
+                                                <ControlTemplate.Triggers>
+                                                    <Trigger Property="IsMouseOver" Value="True">
+                                                        <Setter TargetName="glow" Property="Opacity" Value="0.65"/>
+                                                    </Trigger>
+                                                    <Trigger Property="IsDragging" Value="True">
+                                                        <Setter TargetName="glow" Property="Opacity" Value="0.9"/>
+                                                    </Trigger>
+                                                </ControlTemplate.Triggers>
+                                            </ControlTemplate>
+                                        </Thumb.Template>
+                                    </Thumb>
+                                </Track.Thumb>
+                                <Track.IncreaseRepeatButton>
+                                    <RepeatButton Command="Slider.IncreaseLarge">
+                                        <RepeatButton.Template>
+                                            <ControlTemplate TargetType="RepeatButton">
+                                                <Border Height="5" CornerRadius="3"
+                                                        Background="{DynamicResource SliderTrackBrush}"/>
+                                            </ControlTemplate>
+                                        </RepeatButton.Template>
+                                    </RepeatButton>
+                                </Track.IncreaseRepeatButton>
+                            </Track>
+                        </Grid>
                     </ControlTemplate>
                 </Setter.Value>
             </Setter>
@@ -108,7 +662,7 @@
 
             <!-- ===== 左侧侧边栏 ===== -->
             <Border Grid.Column="0" Background="{DynamicResource SidebarBgBrush}"
-                    CornerRadius="14,0,0,14" ClipToBounds="True">
+                    CornerRadius="14,0,0,14">
                 <Grid>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto"/>
@@ -172,15 +726,8 @@
                     <Button Grid.Row="1" Content="  刷新" HorizontalAlignment="Right"
                             Margin="0,14,0,0" Padding="16,7"
                             FontSize="{DynamicResource ContentFontSize}"
-                            Background="{DynamicResource BtnDefaultBgBrush}"
-                            Foreground="{DynamicResource BtnDefaultFgBrush}"
-                            BorderThickness="0" Cursor="Hand" Click="BtnRefreshClipboard_Click">
-                        <Button.Resources>
-                            <Style TargetType="Border">
-                                <Setter Property="CornerRadius" Value="7"/>
-                            </Style>
-                        </Button.Resources>
-                    </Button>
+                            Style="{StaticResource DefaultBtn}"
+                            Click="BtnRefreshClipboard_Click"/>
                 </Grid>
 
                 <!-- ===== Page 2: 粘贴设置 ===== -->
@@ -198,6 +745,7 @@
                         </Grid>
                         <Slider x:Name="SpeedSlider" Minimum="5" Maximum="500" Value="30"
                                 TickFrequency="10" IsSnapToTickEnabled="True"
+                                Style="{StaticResource ThemeSlider}"
                                 ValueChanged="SpeedSlider_ValueChanged"/>
                     </StackPanel>
                     <StackPanel Margin="0,0,0,28">
@@ -213,6 +761,7 @@
                         </Grid>
                         <Slider x:Name="RandomSlider" Minimum="0" Value="10"
                                 TickFrequency="5" IsSnapToTickEnabled="True"
+                                Style="{StaticResource ThemeSlider}"
                                 ValueChanged="RandomSlider_ValueChanged"/>
                     </StackPanel>
                     <TextBlock
@@ -273,16 +822,14 @@
                             Padding="32,12" FontSize="{DynamicResource ContentFontSize}"
                             FontWeight="SemiBold"
                             Style="{StaticResource AccentBtn}"
-                            Cursor="Hand" Click="BtnApplyHotkey_Click"
-                            IsEnabled="False">
-                    </Button>
+                            Click="BtnApplyHotkey_Click"
+                            IsEnabled="False"/>
 
                     <Button Content="恢复默认 (Ctrl+Alt+V)" HorizontalAlignment="Center"
                             Margin="0,14,0,0" Padding="20,8"
                             FontSize="{DynamicResource SmallFontSize}"
-                            Background="Transparent"
-                            Foreground="{DynamicResource AccentBrush}"
-                            BorderThickness="0" Cursor="Hand" Click="BtnResetHotkey_Click"/>
+                            Style="{StaticResource TextBtn}"
+                            Click="BtnResetHotkey_Click"/>
                 </StackPanel>
 
                 <!-- ===== Page 4: 外观设置 ===== -->
@@ -380,6 +927,7 @@
                                     Minimum="11" Maximum="18" Value="13"
                                     TickFrequency="1" IsSnapToTickEnabled="True"
                                     VerticalAlignment="Center"
+                                    Style="{StaticResource ThemeSlider}"
                                     ValueChanged="FontSizeSlider_ValueChanged"/>
                             <TextBlock x:Name="FontSizeValue" Grid.Column="1"
                                        Text="13" FontSize="{DynamicResource ContentFontSize}"
@@ -413,26 +961,12 @@
                         <Button Content="取消" Padding="28,11"
                                 FontSize="{DynamicResource ContentFontSize}"
                                 Margin="0,0,16,0"
-                                Background="{DynamicResource BtnDefaultBgBrush}"
-                                Foreground="{DynamicResource BtnDefaultFgBrush}"
-                                BorderThickness="0" Cursor="Hand" Click="BtnExitCancel_Click">
-                            <Button.Resources>
-                                <Style TargetType="Border">
-                                    <Setter Property="CornerRadius" Value="9"/>
-                                </Style>
-                            </Button.Resources>
-                        </Button>
+                                Style="{StaticResource DefaultBtn}"
+                                Click="BtnExitCancel_Click"/>
                         <Button Content="确认退出" Padding="28,11"
                                 FontSize="{DynamicResource ContentFontSize}"
-                                Background="{DynamicResource BtnDangerBgBrush}"
-                                Foreground="{DynamicResource BtnDangerFgBrush}"
-                                BorderThickness="0" Cursor="Hand" Click="BtnExitConfirm_Click">
-                            <Button.Resources>
-                                <Style TargetType="Border">
-                                    <Setter Property="CornerRadius" Value="9"/>
-                                </Style>
-                            </Button.Resources>
-                        </Button>
+                                Style="{StaticResource DangerBtn}"
+                                Click="BtnExitConfirm_Click"/>
                     </StackPanel>
                 </StackPanel>
             </Grid>
