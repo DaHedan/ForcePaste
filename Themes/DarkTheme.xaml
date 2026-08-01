@@ -19,7 +19,7 @@
     <Color x:Key="ContentBg">#1E1E2E</Color>
     <Color x:Key="TitleColor">#CDD6F4</Color>
     <Color x:Key="TextColor">#BAC2DE</Color>
-    <Color x:Key="TextSecondary">#6C7086</Color>
+    <Color x:Key="TextSecondary">#9399B2</Color>
     <Color x:Key="CardBg">#252538</Color>
     <Color x:Key="InputBg">#1E1E2E</Color>
     <Color x:Key="InputBorder">#35354A</Color>
@@ -59,7 +59,7 @@
     <Color x:Key="BallPinRing">#89B4FA</Color>
 
     <!-- 退出页 -->
-    <Color x:Key="ExitEmojiBg">#252538</Color>
+    <Color x:Key="ExitEmojiBg">#F9E2AF</Color>
 
     <!-- 笔刷 -->
     <SolidColorBrush x:Key="SidebarBgBrush" Color="{StaticResource SidebarBg}"/>

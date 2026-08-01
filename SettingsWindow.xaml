@@ -64,6 +64,36 @@
                 </Setter.Value>
             </Setter>
         </Style>
+
+        <Style x:Key="AccentBtn" TargetType="Button">
+            <Setter Property="Background" Value="{DynamicResource BtnAccentBgBrush}"/>
+            <Setter Property="Foreground" Value="{DynamicResource BtnAccentFgBrush}"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border x:Name="bg" Background="{TemplateBinding Background}"
+                                CornerRadius="9">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"
+                                              Margin="{TemplateBinding Padding}"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsEnabled" Value="False">
+                                <Setter TargetName="bg" Property="Background"
+                                        Value="{DynamicResource BtnDefaultBgBrush}"/>
+                                <Setter TargetName="bg" Property="Opacity" Value="1"/>
+                                <Setter Property="Foreground"
+                                        Value="{DynamicResource TextBrush}"/>
+                            </Trigger>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="bg" Property="Opacity" Value="0.9"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
     </Window.Resources>
 
     <Border Background="{DynamicResource ContentBgBrush}" CornerRadius="14" Margin="10">
@@ -242,15 +272,9 @@
                             HorizontalAlignment="Center"
                             Padding="32,12" FontSize="{DynamicResource ContentFontSize}"
                             FontWeight="SemiBold"
-                            Background="{DynamicResource BtnAccentBgBrush}"
-                            Foreground="{DynamicResource BtnAccentFgBrush}"
-                            BorderThickness="0" Cursor="Hand" Click="BtnApplyHotkey_Click"
+                            Style="{StaticResource AccentBtn}"
+                            Cursor="Hand" Click="BtnApplyHotkey_Click"
                             IsEnabled="False">
-                        <Button.Resources>
-                            <Style TargetType="Border">
-                                <Setter Property="CornerRadius" Value="9"/>
-                            </Style>
-                        </Button.Resources>
                     </Button>
 
                     <Button Content="恢复默认 (Ctrl+Alt+V)" HorizontalAlignment="Center"
@@ -374,9 +398,13 @@
                 <!-- ===== Page 5: 退出确认 ===== -->
                 <StackPanel x:Name="PageExit" Grid.Row="1" Visibility="Collapsed"
                             VerticalAlignment="Center">
-                    <TextBlock Text="&#x1F44B;" FontSize="52"
-                               HorizontalAlignment="Center" Margin="0,0,0,20"
-                               FontFamily="Segoe UI Emoji"/>
+                    <Border Background="{DynamicResource ExitEmojiBgBrush}"
+                            CornerRadius="32" Width="64" Height="64"
+                            HorizontalAlignment="Center" Margin="0,0,0,20">
+                        <TextBlock Text="&#x1F44B;" FontSize="32"
+                                   HorizontalAlignment="Center" VerticalAlignment="Center"
+                                   FontFamily="Segoe UI Emoji"/>
+                    </Border>
                     <TextBlock Text="确定要退出 ForcePaste 吗？"
                                FontSize="{DynamicResource ContentFontSize}"
                                Foreground="{DynamicResource TitleBrush}"
