@@ -1,4 +1,5 @@
 using System;
+using System.Diagnostics;
 using System.Runtime.InteropServices;
 using System.Windows;
 using System.Windows.Interop;
@@ -71,6 +72,18 @@ namespace ForcePaste
         [DllImport("user32.dll")]
         private static extern IntPtr LoadIcon(IntPtr hInstance, int lpIconName);
 
+        [DllImport("user32.dll", CharSet = CharSet.Unicode)]
+        private static extern IntPtr LoadImage(IntPtr hInst, string lpszName, uint uType, int cxDesired, int cyDesired, uint fuLoad);
+
+        private const uint IMAGE_ICON = 1;
+        private const uint LR_DEFAULTSIZE = 0x0040;
+        private const uint LR_SHARED = 0x8000;
+
+        [DllImport("user32.dll")]
+        private static extern IntPtr GetClassLongPtr(IntPtr hWnd, int nIndex);
+
+        private const int GCL_HICON = -14;
+
         [DllImport("user32.dll")]
         private static extern bool GetCursorPos(out POINT lpPoint);
 
@@ -79,6 +92,15 @@ namespace ForcePaste
 
         [DllImport("user32.dll")]
         private static extern IntPtr DefWindowProc(IntPtr hWnd, int uMsg, IntPtr wParam, IntPtr lParam);
+
+
+        [DllImport("shell32.dll", CharSet = CharSet.Unicode)]
+        private static extern uint ExtractIconEx(string lpszFile, int nIconIndex, IntPtr[] phiconLarge, IntPtr[] phiconSmall, uint nIcons);
+
+        private const int DI_NORMAL = 0x0040;
+
+        [DllImport("shell32.dll")]
+        private static extern int ExtractAssociatedIcon(IntPtr hInst, string lpIconPath, ref int lpiIcon);
 
         #endregion
 
@@ -105,6 +127,7 @@ namespace ForcePaste
             _hwndSource?.AddHook(WndProc);
         }
 
+
         /// <summary>
         /// 隐藏到托盘
         /// </summary>
@@ -122,7 +145,7 @@ namespace ForcePaste
                 uID = 1,
                 uFlags = NIF_MESSAGE | NIF_ICON | NIF_TIP,
                 uCallbackMessage = WM_TRAYICON,
-                hIcon = LoadIcon(IntPtr.Zero, IDI_APPLICATION),
+                hIcon = GetApplicationIcon(),
                 szTip = "ForcePaste",
                 uVersion = NOTIFYICON_VERSION_4
             };
@@ -148,6 +171,25 @@ namespace ForcePaste
                 _mainWindow.Show();
                 _mainWindow.Activate();
             }
+        }
+
+        /// <summary>
+        /// 从程序自身提取图标（WPF 窗口图标通过 WPF 方式设置，GetClassLongPtr 可能返回 0）
+        /// </summary>
+        private static IntPtr GetApplicationIcon()
+        {
+            string exePath = Process.GetCurrentProcess().MainModule?.FileName ?? "";
+            if (!string.IsNullOrEmpty(exePath))
+            {
+                IntPtr[] hIconLarge = new IntPtr[1];
+                IntPtr[] hIconSmall = new IntPtr[1];
+                uint count = ExtractIconEx(exePath, 0, hIconLarge, hIconSmall, 1);
+                if (count > 0 && hIconSmall[0] != IntPtr.Zero)
+                    return hIconSmall[0];
+                if (count > 0 && hIconLarge[0] != IntPtr.Zero)
+                    return hIconLarge[0];
+            }
+            return LoadIcon(IntPtr.Zero, IDI_APPLICATION);
         }
 
         /// <summary>
