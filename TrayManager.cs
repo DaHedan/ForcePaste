@@ -210,7 +210,7 @@ namespace ForcePaste
         private static void ShowContextMenu()
         {
             var menu = CreatePopupMenu();
-            AppendMenu(menu, 0x0000, 100, "打开设置");
+            AppendMenu(menu, 0x0000, 100, "恢复");
             AppendMenu(menu, 0x0800, 0, ""); // separator
             AppendMenu(menu, 0x0000, 101, "退出");
 
