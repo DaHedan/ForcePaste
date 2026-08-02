@@ -23,11 +23,21 @@
             </Ellipse.Effect>
         </Ellipse>
 
-        <!-- 剪贴板图标 -->
+        <!-- 剪贴板 + 光标箭头图标（logo 核心元素） -->
         <Viewbox Width="22" Height="22" HorizontalAlignment="Center" VerticalAlignment="Center"
                  IsHitTestVisible="False">
-            <Path Data="M19,20H5V4H7V7H17V4H19M13,3V1H11V3H13M19,3H18V1H16V3H8V1H6V3H5A2,2 0 0,0 3,5V21A2,2 0 0,0 5,23H19A2,2 0 0,0 21,21V5A2,2 0 0,0 19,3Z"
-                  Fill="{DynamicResource BallIconBrush}"/>
+            <Canvas Width="24" Height="24">
+                <!-- 剪贴板 -->
+                <Path Data="M18,20H6V4H8V7H16V4H18M13,3V1H11V3H13M18,3H17V1H15V3H9V1H7V3H6A2,2 0 0,0 4,5V21A2,2 0 0,0 6,23H18A2,2 0 0,0 20,21V5A2,2 0 0,0 18,3Z"
+                      Fill="{DynamicResource BallIconBrush}"/>
+                <!-- 光标箭头（右下） -->
+                <Path Data="M0,0 L0,11 L3,7.5 L6.5,13 L8,12 L4.5,6.5 L9,6.5 Z"
+                      Fill="{DynamicResource BallIconBrush}">
+                    <Path.RenderTransform>
+                        <TranslateTransform X="14" Y="12"/>
+                    </Path.RenderTransform>
+                </Path>
+            </Canvas>
         </Viewbox>
     </Grid>
 </Window>
