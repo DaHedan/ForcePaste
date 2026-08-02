@@ -61,6 +61,15 @@
     <!-- 退出页 -->
     <Color x:Key="ExitEmojiBg">#F9E2AF</Color>
 
+    <!-- 关于页「完全免费」渐变 -->
+    <Color x:Key="FreeGradientStart">#FFFFFF</Color>
+    <Color x:Key="FreeGradientEnd">#FCD34D</Color>
+    <Color x:Key="FreeGlowColor">#FCD34D</Color>
+    <LinearGradientBrush x:Key="FreeGradientBrush" EndPoint="0.5,1" StartPoint="0.5,0">
+        <GradientStop Color="{StaticResource FreeGradientStart}"/>
+        <GradientStop Color="{StaticResource FreeGradientEnd}" Offset="1"/>
+    </LinearGradientBrush>
+
     <!-- 笔刷 -->
     <SolidColorBrush x:Key="SidebarBgBrush" Color="{StaticResource SidebarBg}"/>
     <SolidColorBrush x:Key="SidebarBtnNormalBrush" Color="{StaticResource SidebarBtnNormal}"/>
