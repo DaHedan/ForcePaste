@@ -13,6 +13,8 @@ namespace ForcePaste
         public double RandomVariance { get; set; } = 0;
         public double FontSize { get; set; } = 13;
         public string Theme { get; set; } = "System";
+        public double BallLeft { get; set; } = -1;
+        public double BallTop { get; set; } = -1;
     }
 
     public static class SettingsService

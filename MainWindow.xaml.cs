@@ -15,8 +15,22 @@ namespace ForcePaste
         {
             InitializeComponent();
             _settingsWin = new SettingsWindow();
-            this.Left = SystemParameters.WorkArea.Right - 90;
-            this.Top = 100;
+
+            // 恢复悬浮球位置
+            var settings = SettingsService.Settings;
+            if (settings.BallLeft >= 0 && settings.BallTop >= 0 &&
+                settings.BallLeft < SystemParameters.VirtualScreenLeft + SystemParameters.VirtualScreenWidth &&
+                settings.BallTop < SystemParameters.VirtualScreenTop + SystemParameters.VirtualScreenHeight)
+            {
+                this.Left = settings.BallLeft;
+                this.Top = settings.BallTop;
+            }
+            else
+            {
+                this.Left = SystemParameters.WorkArea.Right - 90;
+                this.Top = 100;
+            }
+
             _settingsWin.Deactivated += SettingsWin_Deactivated;
             ThemeManager.ThemeChanged += OnThemeChanged;
 
@@ -80,6 +94,13 @@ namespace ForcePaste
             var currentPos = e.GetScreenPosition();
             bool isClick = Math.Abs(currentPos.X - _mouseDownPoint.X) <= SystemParameters.MinimumHorizontalDragDistance &&
                            Math.Abs(currentPos.Y - _mouseDownPoint.Y) <= SystemParameters.MinimumVerticalDragDistance;
+            if (!isClick)
+            {
+                // 拖拽结束，保存位置
+                SettingsService.Settings.BallLeft = this.Left;
+                SettingsService.Settings.BallTop = this.Top;
+                SettingsService.Save();
+            }
             if (isClick)
             {
                 _isPinned = !_isPinned;
@@ -124,6 +145,11 @@ namespace ForcePaste
 
         protected override void OnClosed(EventArgs e)
         {
+            // 保存悬浮球位置
+            SettingsService.Settings.BallLeft = this.Left;
+            SettingsService.Settings.BallTop = this.Top;
+            SettingsService.Save();
+
             ThemeManager.ThemeChanged -= OnThemeChanged;
             TrayManager.Cleanup();
             _settingsWin.Close();
