@@ -483,7 +483,7 @@ namespace ForcePaste
 
         #region --- 退出 ---
 
-        private void BtnExitCancel_Click(object sender, RoutedEventArgs e) => SwitchPage(0);
+        private void BtnExitCancel_Click(object sender, RoutedEventArgs e) => TrayManager.HideToTray();
         private void BtnExitConfirm_Click(object sender, RoutedEventArgs e) => Application.Current.Shutdown();
 
         #endregion

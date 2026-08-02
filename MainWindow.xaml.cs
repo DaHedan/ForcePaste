@@ -19,6 +19,14 @@ namespace ForcePaste
             this.Top = 100;
             _settingsWin.Deactivated += SettingsWin_Deactivated;
             ThemeManager.ThemeChanged += OnThemeChanged;
+
+            // 窗口句柄就绪后再初始化托盘
+            this.SourceInitialized += MainWindow_SourceInitialized;
+        }
+
+        private void MainWindow_SourceInitialized(object? sender, EventArgs e)
+        {
+            TrayManager.Initialize(this, _settingsWin);
         }
 
         private void OnThemeChanged(object? sender, EventArgs e)
@@ -124,6 +132,7 @@ namespace ForcePaste
         protected override void OnClosed(EventArgs e)
         {
             ThemeManager.ThemeChanged -= OnThemeChanged;
+            TrayManager.Cleanup();
             _settingsWin.Close();
             base.OnClosed(e);
         }

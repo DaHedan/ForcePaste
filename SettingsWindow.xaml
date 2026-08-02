@@ -958,7 +958,7 @@
                                Foreground="{DynamicResource TitleBrush}"
                                HorizontalAlignment="Center" Margin="0,0,0,28"/>
                     <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-                        <Button Content="取消" Padding="28,11"
+                        <Button Content="隐藏到托盘" Padding="28,11"
                                 FontSize="{DynamicResource ContentFontSize}"
                                 Margin="0,0,16,0"
                                 Style="{StaticResource DefaultBtn}"
