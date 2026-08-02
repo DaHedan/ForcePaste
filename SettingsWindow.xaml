@@ -1,7 +1,7 @@
 <Window x:Class="ForcePaste.SettingsWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="ForcePaste" Height="580" Width="480"
+        Title="ForcePaste" Height="700" Width="480"
         WindowStyle="None" AllowsTransparency="True" Background="Transparent"
         Topmost="True" ShowInTaskbar="False" ResizeMode="NoResize"
         Opacity="0">
@@ -114,6 +114,39 @@
                     </ControlTemplate>
                 </Setter.Value>
             </Setter>
+        </Style>
+
+        <!-- ===== 关于页 ScrollViewer ===== -->
+        <Style x:Key="AboutScrollViewer" TargetType="ScrollViewer">
+            <Setter Property="HorizontalScrollBarVisibility" Value="Disabled"/>
+            <Setter Property="VerticalScrollBarVisibility" Value="Auto"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="ScrollViewer">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+                            <ScrollContentPresenter Grid.Column="0" Margin="{TemplateBinding Padding}"/>
+                            <ScrollBar x:Name="PART_VerticalScrollBar" Grid.Column="1"
+                                       Width="10" Background="Transparent"
+                                       Opacity="0.4"
+                                       ViewportSize="{TemplateBinding ViewportHeight}"
+                                       Maximum="{TemplateBinding ScrollableHeight}"
+                                       Value="{TemplateBinding VerticalOffset}"/>
+                        </Grid>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <!-- ===== 超链接样式 ===== -->
+        <Style x:Key="AboutLink" TargetType="TextBlock">
+            <Setter Property="Foreground" Value="{DynamicResource AccentBrush}"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="TextDecorations" Value="Underline"/>
+            <Setter Property="FontSize" Value="{DynamicResource ContentFontSize}"/>
         </Style>
 
         <!-- ===== 主题选择按钮：强发光悬停 + 按压缩放 ===== -->
@@ -669,6 +702,7 @@
                         <RowDefinition Height="Auto"/>
                         <RowDefinition Height="Auto"/>
                         <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
                         <RowDefinition Height="*"/>
                         <RowDefinition Height="Auto"/>
                     </Grid.RowDefinitions>
@@ -689,8 +723,12 @@
                             ToolTip="外观设置" Click="BtnTheme_Click">
                         <TextBlock Text="&#x1F3A8;" FontSize="22" FontFamily="Segoe UI Emoji"/>
                     </Button>
+                    <Button Grid.Row="4" x:Name="BtnAbout" Style="{StaticResource SidebarButton}"
+                            ToolTip="关于" Click="BtnAbout_Click">
+                        <TextBlock Text="&#x2139;&#xFE0F;" FontSize="22" FontFamily="Segoe UI Emoji"/>
+                    </Button>
 
-                    <Button Grid.Row="5" x:Name="BtnExit" Style="{StaticResource SidebarButton}"
+                    <Button Grid.Row="6" x:Name="BtnExit" Style="{StaticResource SidebarButton}"
                             ToolTip="退出程序" Click="BtnExit_Click" Margin="0,0,0,14">
                         <TextBlock Text="&#x2716;" FontSize="18" FontFamily="Segoe UI Emoji"/>
                     </Button>
@@ -943,7 +981,139 @@
                     </StackPanel>
                 </ScrollViewer>
 
-                <!-- ===== Page 5: 退出确认 ===== -->
+                <!-- ===== Page 5: 关于 ===== -->
+                <ScrollViewer Grid.Row="1" x:Name="PageAbout" Visibility="Collapsed"
+                              VerticalScrollBarVisibility="Hidden" Padding="0,0,10,0">
+                    <StackPanel>
+                        <!-- 标题行（分行） -->
+                        <StackPanel Margin="0,0,0,16">
+                            <TextBlock Margin="0,0,0,6">
+                                <Run Text="ForcePaste"
+                                     FontSize="{DynamicResource TitleFontSize}" FontWeight="SemiBold"
+                                     Foreground="{DynamicResource TitleBrush}"/>
+                                <Run Text="  v1.0.0"
+                                     FontSize="{DynamicResource ContentFontSize}"
+                                     Foreground="{DynamicResource TextBrush}"/>
+                            </TextBlock>
+                            <TextBlock Text="开发者：DaHedan"
+                                       FontSize="{DynamicResource ContentFontSize}"
+                                       Foreground="{DynamicResource TextBrush}"
+                                       Margin="0,0,0,4"/>
+                            <TextBlock Text="基于 GPL-3.0 License 发布"
+                                       FontSize="{DynamicResource ContentFontSize}"
+                                       Foreground="{DynamicResource TextBrush}"/>
+                        </StackPanel>
+
+                        <TextBlock TextWrapping="Wrap" Margin="0,0,0,14">
+                            <Run Text="此软件 " FontSize="{DynamicResource ContentFontSize}"
+                                 Foreground="{DynamicResource TextBrush}"/>
+                            <InlineUIContainer BaselineAlignment="Center">
+                                <TextBlock FontSize="18" FontWeight="Bold">
+                                    <TextBlock.Foreground>
+                                        <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                                            <GradientStop Color="White"/>
+                                            <GradientStop Color="#FCD34D" Offset="1"/>
+                                        </LinearGradientBrush>
+                                    </TextBlock.Foreground>
+                                    <Run Text="完全免费"/>
+                                    <TextBlock.Effect>
+                                        <DropShadowEffect ShadowDepth="0" BlurRadius="14"
+                                                          Color="#FCD34D" Opacity="0.85"/>
+                                    </TextBlock.Effect>
+                                </TextBlock>
+                            </InlineUIContainer>
+                            <Run Text=" 且开源，没有任何形式的订阅收费和会员充值服务。"
+                                 FontSize="{DynamicResource ContentFontSize}"
+                                 Foreground="{DynamicResource TextBrush}"/>
+                        </TextBlock>
+
+                        <!-- 发行平台 -->
+                        <Grid Margin="0,0,0,20">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Grid.Column="0" Text="发行平台："
+                                       FontSize="{DynamicResource ContentFontSize}"
+                                       Foreground="{DynamicResource TextBrush}"/>
+                            <TextBlock Grid.Column="1" Text="Github" Style="{StaticResource AboutLink}"
+                                       MouseLeftButtonUp="AboutLink_Click" Tag="https://github.com/DaHedan/ForcePaste"
+                                       Margin="0,0,10,0"/>
+                            <TextBlock Grid.Column="2" Text="Gitee" Style="{StaticResource AboutLink}"
+                                       MouseLeftButtonUp="AboutLink_Click" Tag="https://gitee.com/DaHedan/ForcePaste"/>
+                        </Grid>
+
+                        <!-- 许可协议（标题+正文一起滚动） -->
+                        <Border Background="{DynamicResource CardBgBrush}"
+                                CornerRadius="10" Padding="16" MaxHeight="400">
+                            <ScrollViewer Style="{StaticResource AboutScrollViewer}" Padding="0,0,14,0">
+                                <StackPanel>
+                                    <!-- 许可协议标题 -->
+                                    <TextBlock Text="ForcePaste 使用许可与 GPL-3.0 开源协议"
+                                               FontSize="{DynamicResource ContentFontSize}"
+                                               FontWeight="SemiBold"
+                                               Foreground="{DynamicResource TitleBrush}"
+                                               Margin="0,0,0,14"/>
+                                    <TextBox FontSize="{DynamicResource ContentFontSize}"
+                                           Foreground="{DynamicResource TextBrush}"
+                                           Background="Transparent"
+                                           BorderThickness="0"
+                                           IsReadOnly="True"
+                                           TextWrapping="Wrap"
+                                           Padding="0"
+                                           IsReadOnlyCaretVisible="True"
+                                           xml:space="preserve">- 在安装或使用本软件"ForcePaste"（以下简称"本软件"）之前，请您务必仔细阅读并充分理解本协议的全部内容。
+- 本软件依据 GPL-3.0 开源许可协议（GNU General Public License v3.0）进行开源发布。
+- 您一旦安装、复制、运行或以其他方式使用本软件，即视为已阅读并同意 GPL-3.0 开源许可协议以及本说明中的相关条款。
+- 如您不同意，请不要安装或使用本软件，并应立即删除本软件及其相关文件。
+
+一、授权方式
+1. ForcePaste 采用 GPL-3.0（GNU General Public License v3.0）开源许可协议。
+2. 您可以自由使用、复制、修改和分发本软件，但须遵守 GPL-3.0 的全部条款：
+  - 修改后的版本必须同样以 GPL-3.0 发布
+  - 分发时必须提供或可获取完整源代码
+  - 必须保留原始版权声明和许可声明
+3. 以上仅为 GPL-3.0 开源许可协议的简要说明，完整且具有法律效力的条款请以 GPL-3.0 License 正文为准（见项目根目录下的 LICENSE 文件）。
+
+二、系统要求与运行环境
+1. 本软件只能 Windows 10 和 Windows 11 系统上使用，基于 .NET 8.0 运行，需要在系统中安装对应的 .NET 运行时或使用内置 .NET 组件的自包含版本（_selfcontained）。
+2. 在 Windows 10 和较旧版本的 Windows 11 上，如果您的系统尚未安装 .NET 8.0，本软件在第一次运行时会引导您打开微软官方下载页面，请按照页面提示安装 .NET 8.0 运行时，安装完成后即可正常使用本软件。
+3. 如果您不希望单独安装 .NET 8.0 组件，也可以选择下载内置该组件的自包含版本的安装包“ForcePaste_x.x_xxx_selfcontained_Setup.exe”，该版本在无需另外安装.NET运行时的情况下即可直接使用，但安装包及软件的体积相对更大。
+4. 如果您的系统已安装 .NET 8.0，可以选择下载“ForcePaste_x.x_xxx_Setup.exe”的安装包版本，该版本不包含 .NET 组件，安装包及软件的体积相对更小。
+
+三、权利与义务
+1. 您应自行承担使用本软件的风险。本软件仅作为辅助工具提供，不保证满足您的全部需求。
+2. 您在使用本软件时，应自行确保其行为符合当地法律法规及相关政策，不得利用本软件从事任何违法或不当活动。
+3. 除非作者明确以书面形式做出说明，否则作者对本软件的后续维护、更新、技术支持不作任何承诺或保证。
+
+四、隐私与数据
+1. 本软件不存储剪贴板内容到任何持久化介质，不主动收集、上传或存储您的个人隐私数据。但在使用过程中，系统自身产生的日志、配置文件等，可能会保存在您的本地设备中。
+2. 如您选择向作者反馈问题（例如通过 GitHub、Gitee 提交 Issue），请注意不要在公开渠道泄露敏感信息，相关信息将受相应平台（如 GitHub、Gitee）的隐私政策约束。
+
+五、免责声明
+1. 本软件按"原样"提供，不提供任何形式的明示或暗示担保，包括但不限于对适销性、特定用途适用性和不侵权性的担保。
+2. 在任何情况下，作者或版权持有人均不对因使用或无法使用本软件而产生的任何索赔、损害或其他责任（包括但不限于因数据丢失、数据不准确或您及第三方遭受的损失）承担责任，即使作者或版权持有人已被告知存在此类损害的可能性。
+
+六、协议变更与终止
+1. 作者有权在必要时对本协议内容进行修改，修改后的协议将在项目主页或相关渠道公布。如您在协议修改后继续使用本软件，则视为接受修改后的协议。
+2. 如您违反本协议条款，作者有权随时终止您对本软件的使用授权。终止后，您应立即删除本软件及其全部副本。
+
+七、其他
+1. 若本协议的任何条款被有管辖权的法院裁定为无效或不可执行，该条款应在必要的最小范围内被限制或删除，而本协议的其余条款仍然有效并具有约束力。
+2. 由于作者目前没有购买代码签名证书（CA 数字签名）的经济能力，本软件安装包在 Windows 系统的 UAC 弹窗中可能显示为“未知发布者”。若您从 GitHub/Gitee 官方仓库（见下文链接）下载本软件，可以放心安装和使用。
+3. 关于本软件的更多信息、源码以及最新版本，请访问项目主页：
+  - https://github.com/DaHedan/ForcePaste
+  - https://gitee.com/DaHedan/ForcePaste
+
+</TextBox>
+                                </StackPanel>
+                            </ScrollViewer>
+                        </Border>
+                    </StackPanel>
+                </ScrollViewer>
+
+                <!-- ===== Page 6: 退出确认 ===== -->
                 <StackPanel x:Name="PageExit" Grid.Row="1" Visibility="Collapsed"
                             VerticalAlignment="Center">
                     <Border Background="{DynamicResource ExitEmojiBgBrush}"

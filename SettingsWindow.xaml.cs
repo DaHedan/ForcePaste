@@ -165,6 +165,7 @@ namespace ForcePaste
             UpdateSidebarButton(BtnPaste, normalBrush, selectedBrush, normalIcon, selectedIcon);
             UpdateSidebarButton(BtnHotkey, normalBrush, selectedBrush, normalIcon, selectedIcon);
             UpdateSidebarButton(BtnTheme, normalBrush, selectedBrush, normalIcon, selectedIcon);
+            UpdateSidebarButton(BtnAbout, normalBrush, selectedBrush, normalIcon, selectedIcon);
             UpdateSidebarButton(BtnExit, normalBrush, selectedBrush, normalIcon, selectedIcon);
         }
 
@@ -275,12 +276,14 @@ namespace ForcePaste
             PagePasteSettings.Visibility = Visibility.Collapsed;
             PageHotkeySettings.Visibility = Visibility.Collapsed;
             PageThemeSettings.Visibility = Visibility.Collapsed;
+            PageAbout.Visibility = Visibility.Collapsed;
             PageExit.Visibility = Visibility.Collapsed;
 
             BtnClipboard.Tag = "Unselected";
             BtnPaste.Tag = "Unselected";
             BtnHotkey.Tag = "Unselected";
             BtnTheme.Tag = "Unselected";
+            BtnAbout.Tag = "Unselected";
 
             switch (pageIndex)
             {
@@ -313,6 +316,11 @@ namespace ForcePaste
                     UpdateThemeSelection();
                     break;
                 case 4:
+                    PageAbout.Visibility = Visibility.Visible;
+                    PageTitle.Text = "关于";
+                    BtnAbout.Tag = "Selected";
+                    break;
+                case 5:
                     PageExit.Visibility = Visibility.Visible;
                     PageTitle.Text = "退出";
                     break;
@@ -325,7 +333,27 @@ namespace ForcePaste
         private void BtnPaste_Click(object sender, RoutedEventArgs e) => SwitchPage(1);
         private void BtnHotkey_Click(object sender, RoutedEventArgs e) => SwitchPage(2);
         private void BtnTheme_Click(object sender, RoutedEventArgs e) => SwitchPage(3);
-        private void BtnExit_Click(object sender, RoutedEventArgs e) => SwitchPage(4);
+        private void BtnAbout_Click(object sender, RoutedEventArgs e) => SwitchPage(4);
+        private void BtnExit_Click(object sender, RoutedEventArgs e) => SwitchPage(5);
+
+        /// <summary>
+        /// 点击关于页中的 Github / Gitee 链接，用默认浏览器打开
+        /// </summary>
+        private void AboutLink_Click(object sender, RoutedEventArgs e)
+        {
+            if (sender is TextBlock tb && tb.Tag is string url)
+            {
+                try
+                {
+                    System.Diagnostics.Process.Start(new System.Diagnostics.ProcessStartInfo
+                    {
+                        FileName = url,
+                        UseShellExecute = true
+                    });
+                }
+                catch { /* 忽略打开失败 */ }
+            }
+        }
 
         #endregion
 
