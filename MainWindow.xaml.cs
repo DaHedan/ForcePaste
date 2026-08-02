@@ -24,6 +24,7 @@ namespace ForcePaste
             {
                 this.Left = settings.BallLeft;
                 this.Top = settings.BallTop;
+                ClampPositionToScreen();
             }
             else
             {
@@ -84,6 +85,7 @@ namespace ForcePaste
                 {
                     if (!_isPinned) _settingsWin.AnimateHide();
                     this.DragMove();
+                    ClampPositionToScreen();
                 }
             }
         }
@@ -115,6 +117,33 @@ namespace ForcePaste
                     if (!this.IsMouseOver) _settingsWin.AnimateHide();
                 }
             }
+        }
+
+        /// <summary>
+        /// 将悬浮球位置钳制在虚拟屏幕范围内，保证至少一半可见
+        /// </summary>
+        private void ClampPositionToScreen()
+        {
+            double minVisible = Width / 2;
+            double vLeft = SystemParameters.VirtualScreenLeft;
+            double vTop = SystemParameters.VirtualScreenTop;
+            double vRight = vLeft + SystemParameters.VirtualScreenWidth;
+            double vBottom = vTop + SystemParameters.VirtualScreenHeight;
+
+            double maxLeft = vRight - minVisible;
+            double maxTop = vBottom - minVisible;
+            double minLeft = vLeft - Width + minVisible;
+            double minTop = vTop - Height + minVisible;
+
+            double newLeft = this.Left, newTop = this.Top;
+
+            if (newLeft < minLeft) newLeft = minLeft;
+            else if (newLeft > maxLeft) newLeft = maxLeft;
+            if (newTop < minTop) newTop = minTop;
+            else if (newTop > maxTop) newTop = maxTop;
+
+            this.Left = newLeft;
+            this.Top = newTop;
         }
 
         private void UpdatePinVisual()
