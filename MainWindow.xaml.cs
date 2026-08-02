@@ -98,15 +98,8 @@ namespace ForcePaste
 
         private void UpdatePinVisual()
         {
-            // 用简单的淡入淡出动画切换固定环
-            if (_isPinned)
-            {
-                PinRing.Opacity = 1;
-            }
-            else
-            {
-                PinRing.Opacity = 0;
-            }
+            // 隐藏固定环（蓝圈）
+            PinRing.Opacity = 0;
         }
 
         private void SettingsWin_Deactivated(object? sender, EventArgs e)

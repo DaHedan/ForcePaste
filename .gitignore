@@ -8,4 +8,6 @@ obj/
 # 发布目录
 publish/
 
+# 其他组件
+Setup/
 需求文档.md
