@@ -18,9 +18,13 @@ namespace ForcePaste
 
             // 恢复悬浮球位置
             var settings = SettingsService.Settings;
-            if (settings.BallLeft >= 0 && settings.BallTop >= 0 &&
-                settings.BallLeft < SystemParameters.VirtualScreenLeft + SystemParameters.VirtualScreenWidth &&
-                settings.BallTop < SystemParameters.VirtualScreenTop + SystemParameters.VirtualScreenHeight)
+            double vLeft = SystemParameters.VirtualScreenLeft;
+            double vTop = SystemParameters.VirtualScreenTop;
+            double vRight = vLeft + SystemParameters.VirtualScreenWidth;
+            double vBottom = vTop + SystemParameters.VirtualScreenHeight;
+            if (settings.BallLeft != -1 && settings.BallTop != -1 &&
+                settings.BallLeft >= vLeft && settings.BallLeft < vRight &&
+                settings.BallTop >= vTop && settings.BallTop < vBottom)
             {
                 this.Left = settings.BallLeft;
                 this.Top = settings.BallTop;
