@@ -1,6 +1,8 @@
 # <img width="32" height="32" alt="FP" src="https://github.com/user-attachments/assets/eab41b84-cdd4-43a9-8668-bd45695051bc" /> ForcePaste v1.0 ![GitHub 版本](https://img.shields.io/github/v/release/DaHedan/ForcePaste?include_prereleases) ![许可证](https://img.shields.io/github/license/DaHedan/ForcePaste) ![支持系统](https://img.shields.io/badge/OS-Windows_10/11-blue?logo=windows) ![总下载量](https://img.shields.io/github/downloads/DaHedan/ForcePaste/total) ![最后提交](https://img.shields.io/github/last-commit/DaHedan/ForcePaste)
 _快捷键强制粘贴工具_ — 解决部分输入框禁用粘贴的问题，通过模拟键盘输入逐字粘贴剪贴板内容
 
+__想要了解关于 ForcePaste 的详细信息，请前往 [ForcePaste v1.0 Wiki](https://github.com/DaHedan/ForcePaste/wiki/ForcePaste-v1.0-Wiki)。__
+
 ## 📜 许可协议
 本项目采用 [GPL-3.0 许可证](https://github.com/DaHedan/ForcePaste/blob/main/LICENSE)
 
