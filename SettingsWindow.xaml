@@ -1187,7 +1187,7 @@
                                            IsReadOnly="True"
                                            TextWrapping="Wrap"
                                            Padding="0"
-                                           IsReadOnlyCaretVisible="True"
+                                           IsReadOnlyCaretVisible="False" 
                                            xml:space="preserve">- 在安装或使用本软件"ForcePaste"（以下简称"本软件"）之前，请您务必仔细阅读并充分理解本协议的全部内容。
 - 本软件依据 GPL-3.0 开源许可协议（GNU General Public License v3.0）进行开源发布。
 - 您一旦安装、复制、运行或以其他方式使用本软件，即视为已阅读并同意 GPL-3.0 开源许可协议以及本说明中的相关条款。
