@@ -800,8 +800,10 @@
                     <Border Grid.Row="0" Background="{DynamicResource ClipAreaBgBrush}"
                             CornerRadius="10" Padding="16">
                         <TextBox x:Name="ClipboardText" TextWrapping="Wrap"
+                                 AcceptsReturn="True"
                                  VerticalScrollBarVisibility="Auto" BorderThickness="0"
                                  Background="Transparent"
+                                 CaretBrush="{DynamicResource ClipAreaFgBrush}"
                                  FontSize="{DynamicResource ContentFontSize}"
                                  Foreground="{DynamicResource ClipAreaFgBrush}"
                                  Text="暂无剪贴板内容"/>
