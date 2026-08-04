@@ -410,9 +410,11 @@ namespace ForcePaste
                 return;
 
             ModifierKeys mods = Keyboard.Modifiers;
+            if ((GetAsyncKeyState(0x5B) & 0x8000) != 0 || (GetAsyncKeyState(0x5C) & 0x8000) != 0)
+                mods |= ModifierKeys.Windows;
             if (mods == ModifierKeys.None)
             {
-                HotkeyHint.Text = "请按住 Ctrl/Alt/Shift 再按目标键";
+                HotkeyHint.Text = "请按住 Ctrl/Alt/Shift/Win 再按目标键";
                 var dangerColor = TryFindResource("DangerBrush") as Brush;
                 HotkeyHint.Foreground = dangerColor ?? new SolidColorBrush(Color.FromRgb(0xF3, 0x8B, 0xA8));
                 return;
