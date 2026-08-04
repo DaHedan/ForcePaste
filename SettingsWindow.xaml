@@ -726,6 +726,58 @@
                 </Setter.Value>
             </Setter>
         </Style>
+        <!-- ===== 主题 RadioButton：圆点 + 光晕，跟随主题色 ===== -->
+        <Style x:Key="ThemeRadioButton" TargetType="RadioButton">
+            <Setter Property="FontSize" Value="{DynamicResource ContentFontSize}"/>
+            <Setter Property="Foreground" Value="{DynamicResource TextBrush}"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Margin" Value="0,0,0,10"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="RadioButton">
+                        <Grid Background="Transparent">
+                            <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                                <!-- 指示器 -->
+                                <Grid Width="20" Height="20" VerticalAlignment="Center">
+                                    <!-- 外圈 -->
+                                    <Ellipse x:Name="outerRing" Width="18" Height="18"
+                                             Stroke="{DynamicResource InputBorderBrush}"
+                                             StrokeThickness="1.5" Fill="Transparent"/>
+                                    <!-- 内点 + 光晕 -->
+                                    <Ellipse x:Name="innerDot" Width="10" Height="10"
+                                             Fill="{DynamicResource AccentBrush}"
+                                             HorizontalAlignment="Center" VerticalAlignment="Center"
+                                             Opacity="0">
+                                        <Ellipse.Effect>
+                                            <DropShadowEffect BlurRadius="8" ShadowDepth="0"
+                                                              Color="{DynamicResource AccentColor}" Opacity="0.8"/>
+                                        </Ellipse.Effect>
+                                    </Ellipse>
+                                </Grid>
+                                <!-- 文本 -->
+                                <ContentPresenter Margin="10,0,0,0" VerticalAlignment="Center"
+                                                  RecognizesAccessKey="True"/>
+                            </StackPanel>
+                        </Grid>
+                        <ControlTemplate.Triggers>
+                            <!-- 未选中悬停：外圈变亮 -->
+                            <MultiTrigger>
+                                <MultiTrigger.Conditions>
+                                    <Condition Property="IsMouseOver" Value="True"/>
+                                    <Condition Property="IsChecked" Value="False"/>
+                                </MultiTrigger.Conditions>
+                                <Setter TargetName="outerRing" Property="Stroke" Value="{DynamicResource TextSecondaryBrush}"/>
+                            </MultiTrigger>
+                            <!-- 选中 -->
+                            <Trigger Property="IsChecked" Value="True">
+                                <Setter TargetName="outerRing" Property="Stroke" Value="{DynamicResource AccentBrush}"/>
+                                <Setter TargetName="innerDot" Property="Opacity" Value="1"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
     </Window.Resources>
 
     <Border Background="{DynamicResource ContentBgBrush}" CornerRadius="14" Margin="10">
@@ -862,34 +914,26 @@
                         <StackPanel x:Name="NewlineModeGroup">
                             <RadioButton x:Name="RadioNewlineEnter" Content="Enter（直接回车）"
                                          Tag="Enter" GroupName="NewlineMode"
-                                         FontSize="{DynamicResource ContentFontSize}"
-                                         Foreground="{DynamicResource TextBrush}"
-                                         Margin="0,0,0,6"
+                                         Style="{StaticResource ThemeRadioButton}"
                                          Checked="NewlineModeRadio_Checked"/>
                             <RadioButton x:Name="RadioNewlineShiftEnter" Content="Shift + Enter"
                                          Tag="ShiftEnter" GroupName="NewlineMode"
-                                         FontSize="{DynamicResource ContentFontSize}"
-                                         Foreground="{DynamicResource TextBrush}"
-                                         Margin="0,0,0,6"
+                                         Style="{StaticResource ThemeRadioButton}"
                                          Checked="NewlineModeRadio_Checked"/>
                             <RadioButton x:Name="RadioNewlineCtrlEnter" Content="Ctrl + Enter"
                                          Tag="CtrlEnter" GroupName="NewlineMode"
-                                         FontSize="{DynamicResource ContentFontSize}"
-                                         Foreground="{DynamicResource TextBrush}"
-                                         Margin="0,0,0,6"
+                                         Style="{StaticResource ThemeRadioButton}"
                                          Checked="NewlineModeRadio_Checked"/>
                             <RadioButton x:Name="RadioNewlineAltEnter" Content="Alt + Enter"
                                          Tag="AltEnter" GroupName="NewlineMode"
-                                         FontSize="{DynamicResource ContentFontSize}"
-                                         Foreground="{DynamicResource TextBrush}"
-                                         Margin="0,0,0,6"
+                                         Style="{StaticResource ThemeRadioButton}"
                                          Checked="NewlineModeRadio_Checked"/>
                         </StackPanel>
                         <TextBlock
                             FontSize="{DynamicResource SmallFontSize}"
                             Foreground="{DynamicResource TextSecondaryBrush}"
                             TextWrapping="Wrap" Margin="0,6,0,0"
-                            Text=" 选择粘贴时换行符的模拟方式。某些应用（如微信、QQ）需要特定组合键才能发送换行。"/>
+                            Text=" 选择粘贴时换行符的模拟方式。某些应用需要特定组合键才能换行而不是触发发送等任务。"/>
                     </StackPanel>
                 </StackPanel>
 
