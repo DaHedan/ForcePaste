@@ -849,6 +849,11 @@
                                 Style="{StaticResource ThemeSlider}"
                                 ValueChanged="RandomSlider_ValueChanged"/>
                     </StackPanel>
+                    <TextBlock
+                        FontSize="{DynamicResource SmallFontSize}"
+                        Foreground="{DynamicResource TextSecondaryBrush}"
+                        TextWrapping="Wrap" Margin="0,4,0,24"
+                        Text=" 基础速度决定每个字符的输入间隔，波动范围让间隔产生随机变化，模拟真人打字节奏。"/>
                     <StackPanel Margin="0,0,0,28">
                         <TextBlock Text="换行符模拟方式"
                                    FontSize="{DynamicResource ContentFontSize}"
@@ -886,11 +891,6 @@
                             TextWrapping="Wrap" Margin="0,6,0,0"
                             Text=" 选择粘贴时换行符的模拟方式。某些应用（如微信、QQ）需要特定组合键才能发送换行。"/>
                     </StackPanel>
-                    <TextBlock
-                        FontSize="{DynamicResource SmallFontSize}"
-                        Foreground="{DynamicResource TextSecondaryBrush}"
-                        TextWrapping="Wrap" Margin="0,4,0,0"
-                        Text=" 基础速度决定每个字符的输入间隔，波动范围让间隔产生随机变化，模拟真人打字节奏。"/>
                 </StackPanel>
 
                 <!-- ===== Page 3: 快捷键设置 ===== -->
