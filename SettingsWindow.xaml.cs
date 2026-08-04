@@ -229,7 +229,7 @@ namespace ForcePaste
             if (_isTyping) return;
             e.Handled = true;
             string clipText = string.Empty;
-            if (Clipboard.ContainsText()) clipText = Clipboard.GetText();
+            clipText = ClipboardText.Text;
             if (string.IsNullOrEmpty(clipText)) return;
 
             int baseDelay = (int)SpeedSlider.Value;

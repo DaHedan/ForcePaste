@@ -799,7 +799,7 @@
                     </Grid.RowDefinitions>
                     <Border Grid.Row="0" Background="{DynamicResource ClipAreaBgBrush}"
                             CornerRadius="10" Padding="16">
-                        <TextBox x:Name="ClipboardText" IsReadOnly="True" TextWrapping="Wrap"
+                        <TextBox x:Name="ClipboardText" TextWrapping="Wrap"
                                  VerticalScrollBarVisibility="Auto" BorderThickness="0"
                                  Background="Transparent"
                                  FontSize="{DynamicResource ContentFontSize}"
