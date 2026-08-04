@@ -80,6 +80,9 @@ namespace ForcePaste
             FontSizeValue.Text = ((int)_settings.FontSize).ToString();
             ApplyFontSize(_settings.FontSize);
 
+            // 换行符模式
+            ApplyNewlineModeToUI(_settings.NewlineMode);
+
             // 显示当前快捷键
             CurrentHotkeyDisplay.Text = GetHotkeyDisplayText(_hotkeyKey, _hotkeyModifiers);
         }
@@ -97,6 +100,7 @@ namespace ForcePaste
             _settings.RandomVariance = RandomSlider.Value;
             _settings.FontSize = FontSizeSlider.Value;
             _settings.Theme = ThemeManager.CurrentTheme.ToString();
+            _settings.NewlineMode = GetSelectedNewlineMode();
 
             SettingsService.Save(_settings);
         }
@@ -239,7 +243,7 @@ namespace ForcePaste
             try
             {
                 await WaitForModifiersReleaseAsync();
-                await InputHelper.SimulateTextTypingAsync(clipText, baseDelay, randomVariance);
+                await InputHelper.SimulateTextTypingAsync(clipText, baseDelay, randomVariance, GetSelectedNewlineMode());
             }
             finally
             {
@@ -365,6 +369,7 @@ namespace ForcePaste
             {
                 string text = Clipboard.GetText();
                 ClipboardText.Text = string.IsNullOrEmpty(text) ? "暂无剪贴板内容" : text;
+                ClipboardText.CaretIndex = 0; // 重置光标到开头
             }
             else
             {
@@ -410,6 +415,7 @@ namespace ForcePaste
                 return;
 
             ModifierKeys mods = Keyboard.Modifiers;
+            // WPF 的 Keyboard.Modifiers 不报告 Win 键，手动检测
             if ((GetAsyncKeyState(0x5B) & 0x8000) != 0 || (GetAsyncKeyState(0x5C) & 0x8000) != 0)
                 mods |= ModifierKeys.Windows;
             if (mods == ModifierKeys.None)
@@ -526,6 +532,10 @@ namespace ForcePaste
             Hide();
         }
 
+        /// <summary>
+        /// 强制立即完全显示面板，停止所有动画。
+        /// 用于固定面板时确保面板一定展开，不会被 FadeOut_Completed 覆盖。
+        /// </summary>
         public void ForceShow()
         {
             // 停止所有可能正在运行的动画
@@ -561,6 +571,43 @@ namespace ForcePaste
             this.Visibility = Visibility.Collapsed;
             var sb = (Storyboard)Resources["FadeOut"];
             sb.Completed -= FadeOut_Completed;
+        }
+
+        #endregion
+
+        #region --- 换行符模式 ---
+
+        private string GetSelectedNewlineMode()
+        {
+            if (RadioNewlineShiftEnter?.IsChecked == true) return "ShiftEnter";
+            if (RadioNewlineCtrlEnter?.IsChecked == true) return "CtrlEnter";
+            if (RadioNewlineAltEnter?.IsChecked == true) return "AltEnter";
+            return "Enter";
+        }
+
+        private void ApplyNewlineModeToUI(string mode)
+        {
+            switch (mode)
+            {
+                case "ShiftEnter":
+                    RadioNewlineShiftEnter.IsChecked = true;
+                    break;
+                case "CtrlEnter":
+                    RadioNewlineCtrlEnter.IsChecked = true;
+                    break;
+                case "AltEnter":
+                    RadioNewlineAltEnter.IsChecked = true;
+                    break;
+                default:
+                    RadioNewlineEnter.IsChecked = true;
+                    break;
+            }
+        }
+
+        private void NewlineModeRadio_Checked(object sender, RoutedEventArgs e)
+        {
+            if (!_loaded) return;
+            SaveSettings();
         }
 
         #endregion

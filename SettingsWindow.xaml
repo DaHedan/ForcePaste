@@ -849,6 +849,43 @@
                                 Style="{StaticResource ThemeSlider}"
                                 ValueChanged="RandomSlider_ValueChanged"/>
                     </StackPanel>
+                    <StackPanel Margin="0,0,0,28">
+                        <TextBlock Text="换行符模拟方式"
+                                   FontSize="{DynamicResource ContentFontSize}"
+                                   Foreground="{DynamicResource TextBrush}"
+                                   Margin="0,0,0,10"/>
+                        <StackPanel x:Name="NewlineModeGroup">
+                            <RadioButton x:Name="RadioNewlineEnter" Content="Enter（直接回车）"
+                                         Tag="Enter" GroupName="NewlineMode"
+                                         FontSize="{DynamicResource ContentFontSize}"
+                                         Foreground="{DynamicResource TextBrush}"
+                                         Margin="0,0,0,6"
+                                         Checked="NewlineModeRadio_Checked"/>
+                            <RadioButton x:Name="RadioNewlineShiftEnter" Content="Shift + Enter"
+                                         Tag="ShiftEnter" GroupName="NewlineMode"
+                                         FontSize="{DynamicResource ContentFontSize}"
+                                         Foreground="{DynamicResource TextBrush}"
+                                         Margin="0,0,0,6"
+                                         Checked="NewlineModeRadio_Checked"/>
+                            <RadioButton x:Name="RadioNewlineCtrlEnter" Content="Ctrl + Enter"
+                                         Tag="CtrlEnter" GroupName="NewlineMode"
+                                         FontSize="{DynamicResource ContentFontSize}"
+                                         Foreground="{DynamicResource TextBrush}"
+                                         Margin="0,0,0,6"
+                                         Checked="NewlineModeRadio_Checked"/>
+                            <RadioButton x:Name="RadioNewlineAltEnter" Content="Alt + Enter"
+                                         Tag="AltEnter" GroupName="NewlineMode"
+                                         FontSize="{DynamicResource ContentFontSize}"
+                                         Foreground="{DynamicResource TextBrush}"
+                                         Margin="0,0,0,6"
+                                         Checked="NewlineModeRadio_Checked"/>
+                        </StackPanel>
+                        <TextBlock
+                            FontSize="{DynamicResource SmallFontSize}"
+                            Foreground="{DynamicResource TextSecondaryBrush}"
+                            TextWrapping="Wrap" Margin="0,6,0,0"
+                            Text=" 选择粘贴时换行符的模拟方式。某些应用（如微信、QQ）需要特定组合键才能发送换行。"/>
+                    </StackPanel>
                     <TextBlock
                         FontSize="{DynamicResource SmallFontSize}"
                         Foreground="{DynamicResource TextSecondaryBrush}"

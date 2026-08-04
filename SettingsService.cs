@@ -15,6 +15,7 @@ namespace ForcePaste
         public string Theme { get; set; } = "System";
         public double BallLeft { get; set; } = -1;
         public double BallTop { get; set; } = -1;
+        public string NewlineMode { get; set; } = "Enter";
     }
 
     public static class SettingsService
