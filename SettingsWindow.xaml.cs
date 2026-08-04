@@ -524,6 +524,20 @@ namespace ForcePaste
             Hide();
         }
 
+        public void ForceShow()
+        {
+            // 停止所有可能正在运行的动画
+            var fadeOut = (Storyboard)Resources["FadeOut"];
+            fadeOut.Stop(this);
+            fadeOut.Completed -= FadeOut_Completed;
+            var fadeIn = (Storyboard)Resources["FadeIn"];
+            fadeIn.Stop(this);
+
+            // 强制完全可见
+            Visibility = Visibility.Visible;
+            Opacity = 1;
+        }
+
         public void AnimateShow()
         {
             if (Opacity >= 1) return;

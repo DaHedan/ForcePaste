@@ -113,7 +113,7 @@ namespace ForcePaste
                 UpdatePinVisual();
                 if (_isPinned)
                 {
-                    _settingsWin.AnimateShow();
+                    _settingsWin.ForceShow();
                     _settingsWin.Activate();
                 }
                 else
