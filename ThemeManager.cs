@@ -39,9 +39,7 @@ namespace ForcePaste
             ThemeFilePath = Path.Combine(dir, "theme.json");
         }
 
-        /// <summary>
-        /// 从持久化文件加载保存的主题，若无则返回默认 Dark。
-        /// </summary>
+        // 从持久化文件加载保存的主题，若无则返回默认 Dark。
         public static AppTheme LoadSavedTheme()
         {
             try

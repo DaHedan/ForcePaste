@@ -123,9 +123,7 @@ namespace ForcePaste
             }
         }
 
-        /// <summary>
-        /// 将悬浮球位置钳制在虚拟屏幕范围内，保证至少一半可见
-        /// </summary>
+        // 将悬浮球位置钳制在虚拟屏幕范围内，保证至少一半可见
         private void ClampPositionToScreen()
         {
             double minVisible = Width / 2;

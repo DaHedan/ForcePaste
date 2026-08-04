@@ -476,7 +476,7 @@
             </Setter>
         </Style>
 
-        <!-- ===== 危险按钮（确认退出）：红色强发光 + 按压 ===== -->
+        <!-- ===== 危险按钮：红色强发光 + 按压 ===== -->
         <Style x:Key="DangerBtn" TargetType="Button">
             <Setter Property="Background" Value="{DynamicResource BtnDangerBgBrush}"/>
             <Setter Property="Foreground" Value="{DynamicResource BtnDangerFgBrush}"/>

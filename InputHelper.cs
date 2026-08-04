@@ -67,18 +67,13 @@ namespace ForcePaste
 
         // ------------- 按键模拟方法 -------------
 
-        /// <summary>
-        /// 模拟输入一段文本
-        /// </summary>
+        // 模拟输入一段文本
         public static Task SimulateTextTypingAsync(string text, int baseDelayMs, int randomVarianceMs)
         {
             return SimulateTextTypingAsync(text, baseDelayMs, randomVarianceMs, "Enter");
         }
 
-        /// <summary>
-        /// 模拟输入一段文本，支持自定义换行符处理方式
-        /// </summary>
-        /// <param name="newlineMode">换行模式: "Enter", "ShiftEnter", "CtrlEnter", "AltEnter"</param>
+        // 模拟输入一段文本，支持自定义换行符处理方式
         public static async Task SimulateTextTypingAsync(string text, int baseDelayMs, int randomVarianceMs, string newlineMode)
         {
             foreach (char c in text)
@@ -165,9 +160,7 @@ namespace ForcePaste
             SendInput((uint)inputs.Length, inputs, INPUT.Size);
         }
 
-        /// <summary>
-        /// 模拟按下修饰键 + 目标键 + 释放修饰键
-        /// </summary>
+        // 模拟按下修饰键 + 目标键 + 释放修饰键
         private static void SendKeyWithModifiers(ushort wVk, params ushort[] modifiers)
         {
             // 按下所有修饰键

@@ -59,9 +59,7 @@ namespace ForcePaste
             _loaded = true;
         }
 
-        /// <summary>
-        /// 将持久化设置应用到 UI 控件
-        /// </summary>
+        // 将持久化设置应用到 UI 控件
         private void ApplySettingsToUI()
         {
             // 快捷键
@@ -87,9 +85,7 @@ namespace ForcePaste
             CurrentHotkeyDisplay.Text = GetHotkeyDisplayText(_hotkeyKey, _hotkeyModifiers);
         }
 
-        /// <summary>
-        /// 保存当前设置到持久化文件
-        /// </summary>
+        // 保存当前设置到持久化文件
         private void SaveSettings()
         {
             if (!_loaded) return; // 初始化期间不保存
@@ -115,11 +111,9 @@ namespace ForcePaste
             }));
         }
 
-        /// <summary>
-        /// 更新主题按钮的选中外观。
-        /// 注意：绝不修改 ThemeBtn 的 Tag 属性——Tag 存的是 "Light"/"Dark"/"System"，
-        /// 用于 ThemeBtn_Click 识别点了哪个主题。选中状态只改视觉样式。
-        /// </summary>
+        // 更新主题按钮的选中外观。
+        // 注意：绝不修改 ThemeBtn 的 Tag 属性——Tag 存的是 "Light"/"Dark"/"System"，
+        // 用于 ThemeBtn_Click 识别点了哪个主题。选中状态只改视觉样式。
         private void UpdateThemeSelection()
         {
             var current = ThemeManager.CurrentTheme;
@@ -340,9 +334,7 @@ namespace ForcePaste
         private void BtnAbout_Click(object sender, RoutedEventArgs e) => SwitchPage(4);
         private void BtnExit_Click(object sender, RoutedEventArgs e) => SwitchPage(5);
 
-        /// <summary>
-        /// 点击关于页中的 Github / Gitee 链接，用默认浏览器打开
-        /// </summary>
+        // 点击关于页中的 Github / Gitee 链接，用默认浏览器打开
         private void AboutLink_Click(object sender, RoutedEventArgs e)
         {
             if (sender is TextBlock tb && tb.Tag is string url)
@@ -466,10 +458,8 @@ namespace ForcePaste
 
         #region --- 主题选择 ---
 
-        /// <summary>
-        /// 通过按钮在数组中的位置来识别主题，而不是读 Tag。
-        /// Tag 保持 "Light"/"Dark"/"System" 不变（用于调试），但切换逻辑不依赖它。
-        /// </summary>
+        // 通过按钮在数组中的位置来识别主题，而不是读 Tag。
+        // Tag 保持 "Light"/"Dark"/"System" 不变（用于调试），但切换逻辑不依赖它。
         private void ThemeBtn_Click(object sender, RoutedEventArgs e)
         {
             if (sender is Button btn)
@@ -502,9 +492,7 @@ namespace ForcePaste
             SaveSettings(); // 保存
         }
 
-        /// <summary>
-        /// 应用字体大小到全局资源
-        /// </summary>
+        // 应用字体大小到全局资源
         private void ApplyFontSize(double val)
         {
             if (Application.Current?.Resources != null)
@@ -532,10 +520,8 @@ namespace ForcePaste
             Hide();
         }
 
-        /// <summary>
-        /// 强制立即完全显示面板，停止所有动画。
-        /// 用于固定面板时确保面板一定展开，不会被 FadeOut_Completed 覆盖。
-        /// </summary>
+        // 强制立即完全显示面板，停止所有动画。
+        // 用于固定面板时确保面板一定展开，不会被 FadeOut_Completed 覆盖。
         public void ForceShow()
         {
             // 停止所有可能正在运行的动画

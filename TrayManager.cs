@@ -110,9 +110,7 @@ namespace ForcePaste
         private static HwndSource? _hwndSource;
         private static bool _isInTray = false;
 
-        /// <summary>
-        /// 初始化托盘功能（传入 MainWindow 和 SettingsWindow 的引用）
-        /// </summary>
+        // 初始化托盘功能（传入 MainWindow 和 SettingsWindow 的引用）
         public static void Initialize(MainWindow mainWindow, SettingsWindow settingsWindow)
         {
             _mainWindow = mainWindow;
@@ -127,10 +125,7 @@ namespace ForcePaste
             _hwndSource?.AddHook(WndProc);
         }
 
-
-        /// <summary>
-        /// 隐藏到托盘
-        /// </summary>
+        // 隐藏到托盘
         public static void HideToTray()
         {
             if (_isInTray) return;
@@ -156,9 +151,7 @@ namespace ForcePaste
             _isInTray = true;
         }
 
-        /// <summary>
-        /// 从托盘恢复
-        /// </summary>
+        // 从托盘恢复
         public static void ShowFromTray()
         {
             if (!_isInTray) return;
@@ -173,9 +166,7 @@ namespace ForcePaste
             }
         }
 
-        /// <summary>
-        /// 从程序自身提取图标（WPF 窗口图标通过 WPF 方式设置，GetClassLongPtr 可能返回 0）
-        /// </summary>
+        // 从程序自身提取图标（WPF 窗口图标通过 WPF 方式设置，GetClassLongPtr 可能返回 0）
         private static IntPtr GetApplicationIcon()
         {
             string exePath = Process.GetCurrentProcess().MainModule?.FileName ?? "";
@@ -192,9 +183,7 @@ namespace ForcePaste
             return LoadIcon(IntPtr.Zero, IDI_APPLICATION);
         }
 
-        /// <summary>
-        /// 清理托盘资源
-        /// </summary>
+        // 清理托盘资源
         public static void Cleanup()
         {
             if (_isInTray)
@@ -220,9 +209,7 @@ namespace ForcePaste
             Shell_NotifyIcon(NIM_DELETE, ref nid);
         }
 
-        /// <summary>
-        /// WndProc 钩子，拦截托盘消息
-        /// </summary>
+        // WndProc 钩子，拦截托盘消息
         private static IntPtr WndProc(IntPtr hwnd, int msg, IntPtr wParam, IntPtr lParam, ref bool handled)
         {
             if (msg != WM_TRAYICON)
@@ -246,9 +233,7 @@ namespace ForcePaste
             return IntPtr.Zero;
         }
 
-        /// <summary>
-        /// 显示右键菜单
-        /// </summary>
+        // 显示右键菜单
         private static void ShowContextMenu()
         {
             var menu = CreatePopupMenu();

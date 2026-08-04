@@ -61,7 +61,7 @@
     <!-- 退出页 -->
     <Color x:Key="ExitEmojiBg">#F9E2AF</Color>
 
-    <!-- 关于页「完全免费」渐变 -->
+    <!-- 文字渐变 -->
     <Color x:Key="FreeGradientStart">#FFFFFF</Color>
     <Color x:Key="FreeGradientEnd">#FCD34D</Color>
     <Color x:Key="FreeGlowColor">#FCD34D</Color>
