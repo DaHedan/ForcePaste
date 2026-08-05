@@ -1,7 +1,7 @@
-# <img width="32" height="32" alt="FP" src="https://github.com/user-attachments/assets/eab41b84-cdd4-43a9-8668-bd45695051bc" /> ForcePaste v1.0 ![GitHub 版本](https://img.shields.io/github/v/release/DaHedan/ForcePaste?include_prereleases) ![许可证](https://img.shields.io/github/license/DaHedan/ForcePaste) ![支持系统](https://img.shields.io/badge/OS-Windows_10/11-blue?logo=windows) ![总下载量](https://img.shields.io/github/downloads/DaHedan/ForcePaste/total) ![最后提交](https://img.shields.io/github/last-commit/DaHedan/ForcePaste)
+# <img width="32" height="32" alt="FP" src="https://github.com/user-attachments/assets/eab41b84-cdd4-43a9-8668-bd45695051bc" /> ForcePaste v1.1 ![GitHub 版本](https://img.shields.io/github/v/release/DaHedan/ForcePaste?include_prereleases) ![许可证](https://img.shields.io/github/license/DaHedan/ForcePaste) ![支持系统](https://img.shields.io/badge/OS-Windows_10/11-blue?logo=windows) ![总下载量](https://img.shields.io/github/downloads/DaHedan/ForcePaste/total) ![最后提交](https://img.shields.io/github/last-commit/DaHedan/ForcePaste)
 _快捷键强制粘贴工具_ — 解决部分输入框禁用粘贴的问题，通过模拟键盘输入逐字粘贴剪贴板内容
 
-__想要了解关于 ForcePaste 的详细信息，请前往 [ForcePaste v1.0 Wiki](https://github.com/DaHedan/ForcePaste/wiki/ForcePaste-v1.0-Wiki)。__
+__想要了解关于 ForcePaste 的详细信息，请前往 [ForcePaste v1.1 Wiki](https://github.com/DaHedan/ForcePaste/wiki/ForcePaste-v1.1-Wiki)。__
 
 ## 📜 许可协议
 本项目采用 [GPL-3.0 许可证](https://github.com/DaHedan/ForcePaste/blob/main/LICENSE)
@@ -10,11 +10,11 @@ __想要了解关于 ForcePaste 的详细信息，请前往 [ForcePaste v1.0 Wik
 > 本软件安装包使用 Inno Setup Compiler 制作。  
 > 本软件依赖 .NET 8.0 运行，您可以通过微软官方渠道下载安装该组件，或者下载自包含该组件的软件包。
 
-如果你的需求是下载这个软件去使用，而不是需要源代码，请到 [**Releases ForcePaste v1.0**](https://github.com/DaHedan/ForcePaste/releases/tag/v1.0.0) 下载对应的文件，不要下载上面的 Code
+如果你的需求是下载这个软件去使用，而不是需要源代码，请到 [**Releases ForcePaste v1.1**](https://github.com/DaHedan/ForcePaste/releases/tag/v1.1.0) 下载对应的文件，不要下载上面的 Code
 
 ### 普通用户推荐下载
-Windows 64位系统：[ForcePaste_1.0_x64_selfcontained_Setup.exe](https://github.com/DaHedan/ForcePaste/releases/download/v1.0.0/ForcePaste_1.0_x64_selfcontained_Setup.exe)  
-Windows 32位系统：[ForcePaste_1.0_x86_selfcontained_Setup.exe](https://github.com/DaHedan/ForcePaste/releases/download/v1.0.0/ForcePaste_1.0_x86_selfcontained_Setup.exe)
+Windows 64位系统：[ForcePaste_1.1_x64_selfcontained_Setup.exe](https://github.com/DaHedan/ForcePaste/releases/download/v1.1.0/ForcePaste_1.1_x64_selfcontained_Setup.exe)  
+Windows 32位系统：[ForcePaste_1.1_x86_selfcontained_Setup.exe](https://github.com/DaHedan/ForcePaste/releases/download/v1.1.0/ForcePaste_1.1_x86_selfcontained_Setup.exe)
 
 ## 🖥️ 功能介绍
 ### 主程序
@@ -23,12 +23,13 @@ Windows 32位系统：[ForcePaste_1.0_x86_selfcontained_Setup.exe](https://githu
 3. 鼠标悬停在悬浮球上可展开操作面板，左键单击悬浮球可固定操作面板保持展开状态。
 ### 操作面板
 1. **剪贴板** — 可查看要粘贴的内容
-2. **粘贴速度** — 逐字输入间隔（1~30ms），数值越大速度越慢，默认 5ms。
-3. **随机波动** — 模拟人类打字节奏的随机延迟（0~20ms），默认 0ms。
-4. **快捷键** — 可自定义粘贴触发快捷键，默认 Ctrl+Alt+V。
-5. **主题切换** — 支持浅色、深色、跟随系统三种模式。
-6. **字体大小** — 调节悬浮球文字大小（8~24），默认 13。
-7. 所有设置自动保存至 `config/settings.json`，重启后保留。
+2. **粘贴速度** — 逐字输入间隔（1~500ms），数值越大速度越慢，默认 5ms。
+3. **随机波动** — 模拟人类打字节奏的随机延迟（0~`粘贴速度`ms），默认 0ms。
+4. **换行符模拟方式** — 选择用于执行换行的方式（Enter / Shift+Enter / Ctrl+Enter / Alt+Enter），默认 Enter。
+5. **快捷键** — 可自定义粘贴触发快捷键，默认 Ctrl+Alt+V。
+6. **主题切换** — 支持浅色、深色、跟随系统三种模式。
+7. **字体大小** — 调节悬浮球文字大小（11~18），默认 13。
+8. 所有设置自动保存至 `config/settings.json`，重启后保留。
 ### 系统托盘
 - 最小化至系统托盘后，强制粘贴功能依然可用，右键托盘图标可恢复悬浮球或退出程序。
 
