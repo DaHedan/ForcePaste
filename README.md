@@ -33,6 +33,9 @@ Windows 32位系统：[ForcePaste_1.1_x86_selfcontained_Setup.exe](https://githu
 ### 系统托盘
 - 最小化至系统托盘后，强制粘贴功能依然可用，右键托盘图标可恢复悬浮球或退出程序。
 
+## 📺 视频介绍
+[<img width="400" height="300" alt="封面" src="https://github.com/user-attachments/assets/c959244a-ca46-447c-b476-14f355a10c27" />](https://www.bilibili.com/video/BV1ayu365EPQ/)
+
 ## ⚠️ 用户须知
 1. 此工具仅供非商业使用，用户需自行承担使用过程中的风险（如程序异常、设备问题等），作者不对任何直接或间接损失负责。
 2. 此工具仅在用户本地存储配置数据（`config/` 目录），不会收集、上传任何用户信息。
